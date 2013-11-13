@@ -3,10 +3,23 @@
 This is the source for the admin interface that ships with InfluxDB. Feel free to fork this repository,
 make changes, and use your own variant of the interface with InfluxDB. It's currenly built using AngularJS.
 
+### Running
+
+The admin interface is built using Middleman, which uses an asset
+pipeline for creating static assets.
+
+If you've made changes, and want to test them locally do the following:
+
+```
+bundle exec middlemane
+```
+
+This will run a server on port 4567.
+
+
 ### Building The Assets
 
-The admin interface is built using Middleman, which uses an asset pipeline for creating static assets. If you've
-made changes, you can rebuild the assets by doing:
+If you've made changes, you can rebuild the assets by doing:
 
 ```
 bundle exec middleman build
