@@ -50,11 +50,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
 
   $scope.getDatabases = () ->
     $q.when(influx.getDatabases()).then (response) ->
-      $scope.databases = JSON.parse(response)
+      $scope.databases = response
 
   $scope.getClusterAdmins = () ->
     $q.when(influx.getClusterAdmins()).then (response) ->
-      $scope.admins = JSON.parse(response)
+      $scope.admins = response
 
   $scope.createClusterAdmin = () ->
     $q.when(influx.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
@@ -90,7 +90,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     $scope.data = []
 
     $q.when(influx._readPoint($scope.readQuery)).then (response) ->
-      data = JSON.parse(response)
+      data = response
       data.forEach (datum) ->
         $scope.data.push
           name: datum.name
