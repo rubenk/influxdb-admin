@@ -19,6 +19,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.alertMessage = "Error"
   $scope.authMessage = ""
   $scope.selectedPane = "databases"
+  $scope.newDbUser = {}
 
   $scope.newAdminUsername = null
   $scope.newAdminPassword = null
@@ -65,6 +66,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.createDatabase = () ->
     $q.when(influx.createDatabase($scope.newDatabaseName)).then (response) ->
       $scope.newDatabaseName = null
+      $scope.getDatabases()
+
+  $scope.createDatabaseUser = () ->
+    $q.when(influx.createUser($scope.newDbUser.database, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
+      $scope.newDbUser = {}
       $scope.getDatabases()
 
   $scope.deleteDatabase = (name) ->

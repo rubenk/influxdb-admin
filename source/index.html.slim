@@ -82,6 +82,18 @@ div ng-app="adminApp" ng-controller="AdminIndexCtrl"
                   input type="text" placeholder="name" ng-model="newDatabaseName"
                 .large-9.columns
                   button.small.button ng-click="createDatabase()" Connect
+          form
+            fieldset
+              legend Create a Database User
+              .row
+                .large-3.columns
+                  input type="text" placeholder="Database Name" ng-model="newDbUser.database"
+                .large-3.columns
+                  input type="text" placeholder="Username" ng-model="newDbUser.username"
+                .large-3.columns
+                  input type="password" placeholder="Password" ng-model="newDbUser.password"
+                .large-3.columns
+                  button.small.button ng-click="createDatabaseUser()" Connect
 
         section ng-show="selectedPane == 'admins' && isClusterAdmin"
           h2 Cluster Admins
