@@ -25,9 +25,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.newAdminPassword = null
 
   influx = null
-  master = null
-
-  master = new InfluxDB($scope.host, $scope.port, "root", "root")
 
   $scope.authenticateAsClusterAdmin = () ->
     influx = new InfluxDB($scope.host, $scope.port, $scope.username, $scope.password)
