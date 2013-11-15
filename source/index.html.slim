@@ -15,9 +15,16 @@ div ng-app="adminApp" ng-controller="AdminIndexCtrl"
   hr style="margin: 0 0 20px 0;"
 
   section ng-hide="authenticated"
+    dl.sub-nav
+      dd Connect As:
+      dd ng-class="{active: !connectAsClusterAdmin}"
+        a ng-click="connectAsClusterAdmin = false" Database Admin
+      dd ng-class="{active: connectAsClusterAdmin}"
+        a ng-click="connectAsClusterAdmin = true" Cluster Admin
+
     span.label.alert#authFailure style="display:none;" {{authMessage}}
     form
-      fieldset
+      fieldset ng-show="connectAsClusterAdmin"
         legend Connect as a Cluster Administrator
         .row
           .large-3.columns
@@ -27,8 +34,7 @@ div ng-app="adminApp" ng-controller="AdminIndexCtrl"
           .large-6.columns
             button.small.button ng-click="authenticateAsClusterAdmin()" Connect
 
-    form
-      fieldset
+      fieldset ng-hide="connectAsClusterAdmin"
         legend Connect as a Database Administrator
         .row
           .large-3.columns

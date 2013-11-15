@@ -18,8 +18,12 @@ window.InfluxDB = class InfluxDB
     url = @url("cluster_admins")
     $.get url
 
-  authenticateClusterAdmin: (username, password, callback) ->
+  authenticateClusterAdmin: (callback) ->
     url = @url("cluster_admins/authenticate")
+    $.get url
+
+  authenticateDatabaseAdmin: (database, callback) ->
+    url = @url("db/#{database}/authenticate")
     $.get url
 
   createClusterAdmin: (username, password, callback) ->
