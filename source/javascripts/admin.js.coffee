@@ -27,7 +27,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   influx = null
 
   $scope.authenticateAsClusterAdmin = () ->
-    influx = new InfluxDB($scope.host, $scope.port, $scope.username, $scope.password)
+    influx = new InfluxDB
+      host: $scope.host
+      port: $scope.port
+      username: $scope.username
+      password: $scope.password
+
     $q.when(influx.authenticateClusterAdmin()).then (response) ->
       $scope.authenticated = true
       $scope.isClusterAdmin = true
@@ -40,8 +45,14 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $scope.authError(response.responseText)
 
   $scope.authenticateAsDatabaseAdmin = () ->
-    influx = new InfluxDB($scope.host, $scope.port, $scope.username, $scope.password, $scope.database)
-    $q.when(influx.authenticateDatabaseAdmin($scope.database)).then (response) ->
+    influx = new InfluxDB
+      host: $scope.host
+      port: $scope.port
+      username: $scope.username
+      password: $scope.password
+      database: $scope.database
+
+    $q.when(influx.authenticateDatabaseUser($scope.database)).then (response) ->
       $scope.authenticated = true
       $scope.isDatabaseAdmin = true
       $scope.isClusterAdmin = false
