@@ -18,6 +18,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.successMessage = "OK"
   $scope.alertMessage = "Error"
   $scope.authMessage = ""
+  $scope.queryMessage = ""
   $scope.selectedPane = "databases"
   $scope.newDbUser = {}
 
@@ -107,7 +108,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.readData = () ->
     $scope.data = []
 
-    $q.when(influx._readPoint($scope.readQuery)).then (response) ->
+    $q.when(influx.query($scope.readQuery)).then (response) ->
       data = response
       data.forEach (datum) ->
         $scope.data.push
@@ -116,6 +117,10 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
           points: datum.points
           graphs: $scope.filteredColumns(datum).map (column) ->
             $scope.columnPoints(datum, column)
+    , (response) ->
+      $scope.queryMessage = "ERROR: #{response.responseText}"
+      $("span#queryFailure").show().delay(2500).fadeOut(1000)
+
 
   $scope.authError = (msg) ->
     $scope.authMessage = msg

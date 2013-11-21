@@ -136,8 +136,8 @@ div ng-app="adminApp" ng-controller="AdminIndexCtrl"
               label Values
               textarea placeholder="{ ... }" ng-model="writeValues"
               button.small.button ng-click="writeData()" Write Point
-              span.label.success#writeSuccess style="display:none; margin-left:40px;" {{successMessage}}
-              span.label.alert#writeFailure style="display:none; margin-left:40px;" {{alertMessage}}
+              span.label.success#writeSuccess style="display:none; margin-left:20px;" {{successMessage}}
+              span.label.alert#writeFailure style="display:none; margin-left:20px;" {{alertMessage}}
 
           form
             fieldset
@@ -145,6 +145,7 @@ div ng-app="adminApp" ng-controller="AdminIndexCtrl"
               label Query
               input type="text" placeholder="SELECT ..." ng-model="readQuery"
               button.small.button ng-click="readData()" Execute Query
+              span.label.alert#queryFailure style="display:none; margin-left:20px;" {{queryMessage}}
 
           div ng-repeat="datum in data"
             h4
