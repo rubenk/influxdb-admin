@@ -1,3 +1,7 @@
+@import "normalize";
+@import "foundation";
+@import "general_foundicons";
+
 .axis path, .axis line {
   fill: none;
   stroke: #000;
@@ -10,4 +14,3 @@
   stroke-width: 1.5px;
 }
 
-@import "general_foundicons";
