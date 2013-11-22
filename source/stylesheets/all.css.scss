@@ -2,15 +2,11 @@
 @import "foundation";
 @import "general_foundicons";
 
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+iframe#explorer {
+  width: 100%;
+  background-color: transparent;
+  border: 0px none transparent;
+  padding: 0px;
+  overflow: hidden;
 }
 

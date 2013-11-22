@@ -1,14 +1,10 @@
+#= require vendor/jquery-2.0.3
+#= require vendor/angular
+#= require_self
+
 adminApp = angular.module "adminApp", []
 
 adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $location, $q) ->
-  $scope.host = $location.search()["host"] || $location.host()
-  $scope.port = $location.search()["port"] || if $scope.host == "sandbox.influxdb.org" then 9061 else 8086
-  $scope.database = $location.search()["database"]
-  $scope.username = $location.search()["username"]
-  $scope.password = $location.search()["password"]
-  $scope.authenticated = false
-  $scope.databases = []
-  $scope.admins = []
   $scope.data = []
   $scope.readQuery = null
   $scope.writeSeriesName = null
@@ -17,76 +13,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.alertMessage = "Error"
   $scope.authMessage = ""
   $scope.queryMessage = ""
-  $scope.selectedPane = "databases"
-  $scope.newDbUser = {}
-
-  $scope.newAdminUsername = null
-  $scope.newAdminPassword = null
-
-  window.influx = null
-
-  $scope.authenticateAsClusterAdmin = () ->
-    window.influx = new InfluxDB
-      host: $scope.host
-      port: $scope.port
-      username: $scope.username
-      password: $scope.password
-
-    $q.when(window.influx.authenticateClusterAdmin()).then (response) ->
-      $scope.authenticated = true
-      $scope.isClusterAdmin = true
-      $scope.isDatabaseAdmin = false
-      $scope.getDatabases()
-      $scope.getClusterAdmins()
-      $scope.selectedPane = "databases"
-      $location.search({})
-    , (response) ->
-      $scope.authError(response.responseText)
-
-  $scope.authenticateAsDatabaseAdmin = () ->
-    window.influx = new InfluxDB
-      host: $scope.host
-      port: $scope.port
-      username: $scope.username
-      password: $scope.password
-      database: $scope.database
-
-    $q.when(window.influx.authenticateDatabaseUser($scope.database)).then (response) ->
-      $scope.authenticated = true
-      $scope.isDatabaseAdmin = true
-      $scope.isClusterAdmin = false
-      $scope.selectedPane = "data"
-      $location.search({})
-    , (response) ->
-      $scope.authError(response.responseText)
-
-  $scope.getDatabases = () ->
-    $q.when(window.influx.getDatabases()).then (response) ->
-      $scope.databases = response
-
-  $scope.getClusterAdmins = () ->
-    $q.when(window.influx.getClusterAdmins()).then (response) ->
-      $scope.admins = response
-
-  $scope.createClusterAdmin = () ->
-    $q.when(window.influx.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
-      $scope.newAdminUsername = null
-      $scope.newAdminPassword = null
-      $scope.getClusterAdmins()
-
-  $scope.createDatabase = () ->
-    $q.when(window.influx.createDatabase($scope.newDatabaseName)).then (response) ->
-      $scope.newDatabaseName = null
-      $scope.getDatabases()
-
-  $scope.createDatabaseUser = () ->
-    $q.when(window.influx.createUser($scope.newDbUser.database, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
-      $scope.newDbUser = {}
-      $scope.getDatabases()
-
-  $scope.deleteDatabase = (name) ->
-    $q.when(window.influx.deleteDatabase(name)).then (response) ->
-      $scope.getDatabases()
+  $scope.selectedPane = "data"
 
   $scope.writeData = () ->
     unless $scope.writeSeriesName
@@ -100,13 +27,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $("span#writeFailure").show().delay(1500).fadeOut(500)
       return
 
-    $q.when(window.influx.writePoint($scope.writeSeriesName, values)).then (response) ->
+    $q.when(parent.influx.writePoint($scope.writeSeriesName, values)).then (response) ->
       $scope.success("200 OK")
 
   $scope.readData = () ->
     $scope.data = []
 
-    $q.when(window.influx.query($scope.readQuery)).then (response) ->
+    $q.when(window.parent.influx.query($scope.readQuery)).then (response) ->
       data = response
       data.forEach (datum) ->
         $scope.data.push
@@ -118,11 +45,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     , (response) ->
       $scope.queryMessage = "ERROR: #{response.responseText}"
       $("span#queryFailure").show().delay(2500).fadeOut(1000)
-
-
-  $scope.authError = (msg) ->
-    $scope.authMessage = msg
-    $("span#authFailure").show().delay(1500).fadeOut(500)
 
   $scope.error = (msg) ->
     $scope.alertMessage = msg
@@ -195,5 +117,5 @@ adminApp.directive "lineChart", [() ->
         .attr("d", line)
 
     scope.render(scope.data)
-
 ]
+

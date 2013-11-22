@@ -1,163 +1,111 @@
-div ng-app="adminApp" ng-controller="AdminIndexCtrl"
-  .row
-    .large-8.columns
-      h2 InfluxDB
-      h6.subheader ng-show="authenticated" style="margin-top: -20px;"
-        ' Connected to
-        strong
-          ' {{host}}:{{port}}/{{database}}
-        ' as
-        strong
-          ' {{username}}
-        span.label.secondary.radius ng-show="isClusterAdmin" Cluster Admin
-    .large-4.columns style="margin-top:20px; text-align:right"
-      button.small.button ng-show="authenticated" ng-click="authenticated=false" Disconnect
-  hr style="margin: 0 0 20px 0;"
+.row
+  .twelve.columns
+    section ng-hide="authenticated"
+      dl.sub-nav style="margin-top:20px;"
+        dt Connect As:
+        dd ng-class="{active: !connectAsClusterAdmin}"
+          a ng-click="connectAsClusterAdmin = false" Database Admin
+        dd ng-class="{active: connectAsClusterAdmin}"
+          a ng-click="connectAsClusterAdmin = true" Cluster Admin
 
-  section ng-hide="authenticated"
-    dl.sub-nav
-      dd Connect As:
-      dd ng-class="{active: !connectAsClusterAdmin}"
-        a ng-click="connectAsClusterAdmin = false" Database Admin
-      dd ng-class="{active: connectAsClusterAdmin}"
-        a ng-click="connectAsClusterAdmin = true" Cluster Admin
+    section ng-hide="authenticated"
+      span.label.alert#authFailure style="display:none;" {{authMessage}}
+      form
+        fieldset ng-show="connectAsClusterAdmin"
+          legend Connect as a Cluster Administrator
+          .row
+            .large-3.columns
+              input type="text" placeholder="username" ng-model="username"
+            .large-3.columns
+              input type="password" placeholder="password" ng-model="password"
+            .large-6.columns
+              button.small.button ng-click="authenticateAsClusterAdmin()" Connect
 
-    span.label.alert#authFailure style="display:none;" {{authMessage}}
-    form
-      fieldset ng-show="connectAsClusterAdmin"
-        legend Connect as a Cluster Administrator
-        .row
-          .large-3.columns
-            input type="text" placeholder="username" ng-model="username"
-          .large-3.columns
-            input type="password" placeholder="password" ng-model="password"
-          .large-6.columns
-            button.small.button ng-click="authenticateAsClusterAdmin()" Connect
+        fieldset ng-hide="connectAsClusterAdmin"
+          legend Connect as a Database Administrator
+          .row
+            .large-3.columns
+              input type="text" placeholder="username" ng-model="username"
+            .large-3.columns
+              input type="password" placeholder="password" ng-model="password"
+            .large-3.columns
+              input type="text" placeholder="database" ng-model="database"
+            .large-3.columns
+              button.small.button ng-click="authenticateAsDatabaseAdmin()" Connect
 
-      fieldset ng-hide="connectAsClusterAdmin"
-        legend Connect as a Database Administrator
-        .row
-          .large-3.columns
-            input type="text" placeholder="username" ng-model="username"
-          .large-3.columns
-            input type="password" placeholder="password" ng-model="password"
-          .large-3.columns
-            input type="text" placeholder="database" ng-model="database"
-          .large-3.columns
-            button.small.button ng-click="authenticateAsDatabaseAdmin()" Connect
+        fieldset
+          legend Hostname and Port Settings
+          .row
+            .large-3.columns
+              input type="text" placeholder="hostname" ng-model="host"
+            .large-1.columns
+              input type="text" placeholder="port" ng-model="port"
+            .large-8.columns
 
-      fieldset
-        legend Hostname and Port Settings
-        .row
-          .large-3.columns
-            input type="text" placeholder="hostname" ng-model="host"
-          .large-1.columns
-            input type="text" placeholder="port" ng-model="port"
-          .large-8.columns
+    div ng-show="authenticated"
+      .row
+        .twelve.columns
 
-  div ng-show="authenticated"
-    .row
-      .twelve.columns
-        dl.sub-nav ng-show="authenticated"
-          dd ng-class="{active: selectedPane == 'databases'}" ng-show="isClusterAdmin"
-            a ng-click="selectedPane = 'databases'" Databases
-          dd ng-class="{active: selectedPane == 'admins'}" ng-show="isClusterAdmin"
-            a ng-click="selectedPane = 'admins'" Cluster Admins
-          dd ng-class="{active: selectedPane == 'data'}"
-            a ng-click="selectedPane = 'data'" Data Interface
-
-        section ng-show="selectedPane == 'databases' && isClusterAdmin"
-          h2 Databases
-          table.twelve.columns
-            thead
-              tr
-                td Database Name
-                td
-            tr ng-repeat="database in databases"
-              td
-                | {{database.name}}
-              td style="text-align:right;"
-                a ng-click="deleteDatabase(database.name)"
-                  i.foundicon-remove
-
-          form
-            fieldset
-              legend Create a Database
-              .row
-                .large-3.columns
-                  input type="text" placeholder="name" ng-model="newDatabaseName"
-                .large-9.columns
-                  button.small.button ng-click="createDatabase()" Connect
-          form
-            fieldset
-              legend Create a Database User
-              .row
-                .large-3.columns
-                  input type="text" placeholder="Database Name" ng-model="newDbUser.database"
-                .large-3.columns
-                  input type="text" placeholder="Username" ng-model="newDbUser.username"
-                .large-3.columns
-                  input type="password" placeholder="Password" ng-model="newDbUser.password"
-                .large-3.columns
-                  button.small.button ng-click="createDatabaseUser()" Connect
-
-        section ng-show="selectedPane == 'admins' && isClusterAdmin"
-          h2 Cluster Admins
-          table.twelve.columns
-            thead
-              tr
-                td  Username
-                td
-            tr ng-repeat="admin in admins"
-              td
-                | {{admin.username}}
-              td style="text-align:right;"
-                a ng-click="deleteAdminUser(admin.username)"
-                  i.foundicon-remove
-
-          form
-            fieldset
-              legend Create a Cluster Admin
-              .row
-                .large-3.columns
-                  input type="text" placeholder="username" ng-model="newAdminUsername"
-                .large-3.columns
-                  input type="password" placeholder="password" ng-model="newAdminPassword"
-                .large-6.columns
-                  button.small.button ng-click="createClusterAdmin()" Connect
-
-        section ng-show="selectedPane == 'data'"
-          h2 Data Interface
-          form
-            fieldset
-              legend Write Point
-              label Time Series Name
-              input type="text" ng-model="writeSeriesName"
-              label Values
-              textarea placeholder="{ ... }" ng-model="writeValues"
-              button.small.button ng-click="writeData()" Write Point
-              span.label.success#writeSuccess style="display:none; margin-left:20px;" {{successMessage}}
-              span.label.alert#writeFailure style="display:none; margin-left:20px;" {{alertMessage}}
-
-          form
-            fieldset
-              legend Read Points
-              label Query
-              input type="text" placeholder="SELECT ..." ng-model="readQuery"
-              button.small.button ng-click="readData()" Execute Query
-              span.label.alert#queryFailure style="display:none; margin-left:20px;" {{queryMessage}}
-
-          div ng-repeat="datum in data"
-            h4
-              | {{datum.name}}
-
-            line-chart data="graph" ng-repeat="graph in datum.graphs"
-
-            table.columns.twelve
+          section ng-show="selectedPane == 'databases' && isClusterAdmin"
+            h2 Databases
+            table.twelve.columns
               thead
                 tr
-                  th ng-repeat="column in datum.columns" {{column}}
-              tbody
-                tr ng-repeat="point in datum.points"
-                  td ng-repeat="value in point track by $index" {{value}}
+                  td Database Name
+                  td
+              tr ng-repeat="database in databases"
+                td
+                  | {{database.name}}
+                td style="text-align:right;"
+                  a ng-click="deleteDatabase(database.name)"
+                    i.foundicon-remove
+
+            form
+              fieldset
+                legend Create a Database
+                .row
+                  .large-3.columns
+                    input type="text" placeholder="name" ng-model="newDatabaseName"
+                  .large-9.columns
+                    button.tiny.button ng-click="createDatabase()" Create
+            form
+              fieldset
+                legend Create a Database User
+                .row
+                  .large-3.columns
+                    input type="text" placeholder="Database Name" ng-model="newDbUser.database"
+                  .large-3.columns
+                    input type="text" placeholder="Username" ng-model="newDbUser.username"
+                  .large-3.columns
+                    input type="password" placeholder="Password" ng-model="newDbUser.password"
+                  .large-3.columns
+                    button.tiny.button ng-click="createDatabaseUser()" Create
+
+          section ng-show="selectedPane == 'admins' && isClusterAdmin"
+            h2 Cluster Admins
+            table.twelve.columns
+              thead
+                tr
+                  td  Username
+                  td
+              tr ng-repeat="admin in admins"
+                td
+                  | {{admin.username}}
+                td style="text-align:right;"
+                  a ng-click="deleteAdminUser(admin.username)"
+                    i.foundicon-remove
+
+            form
+              fieldset
+                legend Create a Cluster Admin
+                .row
+                  .large-3.columns
+                    input type="text" placeholder="username" ng-model="newAdminUsername"
+                  .large-3.columns
+                    input type="password" placeholder="password" ng-model="newAdminPassword"
+                  .large-6.columns
+                    button.tiny.button ng-click="createClusterAdmin()" Create
+
+section ng-show="selectedPane == 'data' && authenticated"
+  iframe#explorer.large-12 style="height:2000px;" src="/interfaces/default"
 
