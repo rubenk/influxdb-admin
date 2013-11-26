@@ -11,7 +11,7 @@ pipeline for creating static assets.
 If you've made changes, and want to test them locally do the following:
 
 ```
-bundle exec middlemane
+bundle exec middleman
 ```
 
 This will run a server on port 4567.
