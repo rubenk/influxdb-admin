@@ -1,5 +1,9 @@
 adminApp = angular.module "adminApp", []
 
+adminApp.config ($locationProvider) ->
+  $locationProvider.html5Mode(true)
+  $locationProvider.hashPrefix('!')
+
 adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $location, $q) ->
   $scope.host = $location.search()["host"] || $location.host()
   $scope.port = $location.search()["port"] || if $scope.host == "sandbox.influxdb.org" then 9061 else 8086
@@ -24,6 +28,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.newAdminPassword = null
 
   window.influx = null
+
+  $scope.getHashParams = () ->
+    $location.search()
+
+  $scope.setHashParams = (params) ->
+    $location.search(params)
 
   $scope.authenticateAsClusterAdmin = () ->
     window.influx = new InfluxDB

@@ -10,3 +10,9 @@ $ ->
   setExplorerSize();
 
   $(window).on("resize", setExplorerSize)
+
+  window.getHashParams = () ->
+    angular.element(document.getElementsByTagName("body")[0]).scope().getHashParams()
+
+  window.setHashParams = (params) ->
+    angular.element(document.getElementsByTagName("body")[0]).scope().setHashParams(params)
