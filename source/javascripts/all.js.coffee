@@ -1,3 +1,4 @@
+#= require vendor/custom.modernizr
 #= require vendor/jquery-2.0.3
 #= require vendor/angular
 #= require admin
@@ -16,3 +17,5 @@ $ ->
 
   window.setHashParams = (params) ->
     angular.element(document.getElementsByTagName("body")[0]).scope().setHashParams(params)
+
+  $(document).foundation();
