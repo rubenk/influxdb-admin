@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title InfluxDB Administration
+    = javascript_include_tag "http://code.jquery.com/jquery-2.0.3.min.js"
+    = javascript_include_tag "http://d3js.org/d3.v3.min.js"
+    = javascript_include_tag "http://influxdb.org/javascripts/vendor/rickshaw.js"
+    = javascript_include_tag "interfaces/example"
+    = stylesheet_link_tag "//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"
+    = stylesheet_link_tag "http://influxdb.org/stylesheets/vendor/rickshaw.css"
+    = stylesheet_link_tag "interfaces/example"
+
+  body
+    .container
+      .row
+        .col-md-12
+          h1 Important Dashboard
+
+          #chart_container
+            #y_axis
+            #x_axis
+            #chart
+
+
+
