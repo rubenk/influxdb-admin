@@ -1,8 +1,9 @@
 adminApp = angular.module "adminApp", []
 
-adminApp.config ($locationProvider) ->
+adminApp.config ["$locationProvider", ($locationProvider) ->
   $locationProvider.html5Mode(true)
   $locationProvider.hashPrefix('!')
+]
 
 adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $location, $q) ->
   $scope.host = $location.search()["host"] || $location.host()
