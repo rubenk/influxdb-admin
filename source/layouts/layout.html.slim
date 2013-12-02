@@ -23,10 +23,10 @@ html
             a ng-click="selectedPane = 'admins'" Cluster Admins
           li.has-dropdown ng-class="{active: selectedPane == 'data'}"
 
-            a href="#" ng-click="" Current Interface
+            a href="#" ng-click="" Interfaces
             ul.dropdown
               li ng-repeat="i in interfaces"
-                a href="#" ng-click="setCurrentInterface(i)" {{i}}
+                a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
         ul.right
           li.has-form
             a.button ng-show="authenticated" ng-click="authenticated=false" Disconnect

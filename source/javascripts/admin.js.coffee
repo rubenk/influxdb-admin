@@ -40,6 +40,10 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     $q.when(window.influxdb.getInterfaces()).then (response) ->
       $scope.interfaces = response
 
+  $scope.humanize = (title) ->
+    title.replace(/_/g, ' ').replace /(\w+)/g, (match) ->
+      match.charAt(0).toUpperCase() + match.slice(1);
+
   $scope.setCurrentInterface = (i) ->
     $("iframe").prop("src", "/interfaces/#{i}")
     $scope.selectedPane = "data"
