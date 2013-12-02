@@ -115,38 +115,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     $q.when(window.influxdb.deleteDatabase(name)).then (response) ->
       $scope.getDatabases()
 
-  $scope.writeData = () ->
-    unless $scope.writeSeriesName
-      $scope.error("Time Series Name is required.")
-      return
-
-    try
-      values = JSON.parse($scope.writeValues)
-    catch
-      $scope.alertMessage = "Unable to parse JSON."
-      $("span#writeFailure").show().delay(1500).fadeOut(500)
-      return
-
-    $q.when(window.influxdb.writePoint($scope.writeSeriesName, values)).then (response) ->
-      $scope.success("200 OK")
-
-  $scope.readData = () ->
-    $scope.data = []
-
-    $q.when(window.influxdb.query($scope.readQuery)).then (response) ->
-      data = response
-      data.forEach (datum) ->
-        $scope.data.push
-          name: datum.name
-          columns: datum.columns
-          points: datum.points
-          graphs: $scope.filteredColumns(datum).map (column) ->
-            $scope.columnPoints(datum, column)
-    , (response) ->
-      $scope.queryMessage = "ERROR: #{response.responseText}"
-      $("span#queryFailure").show().delay(2500).fadeOut(1000)
-
-
   $scope.authError = (msg) ->
     $scope.authMessage = msg
     $("span#authFailure").show().delay(1500).fadeOut(500)
