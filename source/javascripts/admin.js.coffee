@@ -23,11 +23,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.queryMessage = ""
   $scope.selectedPane = "databases"
   $scope.newDbUser = {}
+  $scope.interfaces = []
 
   $scope.newAdminUsername = null
   $scope.newAdminPassword = null
 
-  window.influx = null
+  window.influxdb = null
 
   $scope.getHashParams = () ->
     $location.search()
@@ -35,14 +36,23 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.setHashParams = (params) ->
     $location.search(params)
 
+  $scope.getInterfaces = () ->
+    $q.when(window.influxdb.getInterfaces()).then (response) ->
+      $scope.interfaces = response
+
+  $scope.setCurrentInterface = (i) ->
+    $("iframe").prop("src", "/interfaces/#{i}")
+    $scope.selectedPane = "data"
+
   $scope.authenticateAsClusterAdmin = () ->
-    window.influx = new InfluxDB
+    window.influxdb = new InfluxDB
       host: $scope.host
       port: $scope.port
       username: $scope.username
       password: $scope.password
 
-    $q.when(window.influx.authenticateClusterAdmin()).then (response) ->
+    $q.when(window.influxdb.authenticateClusterAdmin()).then (response) ->
+      $scope.getInterfaces()
       $scope.authenticated = true
       $scope.isClusterAdmin = true
       $scope.isDatabaseAdmin = false
@@ -54,48 +64,50 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $scope.authError(response.responseText)
 
   $scope.authenticateAsDatabaseAdmin = () ->
-    window.influx = new InfluxDB
+    window.influxdb = new InfluxDB
       host: $scope.host
       port: $scope.port
       username: $scope.username
       password: $scope.password
       database: $scope.database
 
-    $q.when(window.influx.authenticateDatabaseUser($scope.database)).then (response) ->
+    $q.when(window.influxdb.authenticateDatabaseUser($scope.database)).then (response) ->
+      $scope.getInterfaces()
       $scope.authenticated = true
       $scope.isDatabaseAdmin = true
       $scope.isClusterAdmin = false
       $scope.selectedPane = "data"
+      $scope.setCurrentInterface("example")
       $location.search({})
     , (response) ->
       $scope.authError(response.responseText)
 
   $scope.getDatabases = () ->
-    $q.when(window.influx.getDatabases()).then (response) ->
+    $q.when(window.influxdb.getDatabases()).then (response) ->
       $scope.databases = response
 
   $scope.getClusterAdmins = () ->
-    $q.when(window.influx.getClusterAdmins()).then (response) ->
+    $q.when(window.influxdb.getClusterAdmins()).then (response) ->
       $scope.admins = response
 
   $scope.createClusterAdmin = () ->
-    $q.when(window.influx.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
+    $q.when(window.influxdb.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
       $scope.newAdminUsername = null
       $scope.newAdminPassword = null
       $scope.getClusterAdmins()
 
   $scope.createDatabase = () ->
-    $q.when(window.influx.createDatabase($scope.newDatabaseName)).then (response) ->
+    $q.when(window.influxdb.createDatabase($scope.newDatabaseName)).then (response) ->
       $scope.newDatabaseName = null
       $scope.getDatabases()
 
   $scope.createDatabaseUser = () ->
-    $q.when(window.influx.createUser($scope.newDbUser.database, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
+    $q.when(window.influxdb.createUser($scope.newDbUser.database, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
       $scope.newDbUser = {}
       $scope.getDatabases()
 
   $scope.deleteDatabase = (name) ->
-    $q.when(window.influx.deleteDatabase(name)).then (response) ->
+    $q.when(window.influxdb.deleteDatabase(name)).then (response) ->
       $scope.getDatabases()
 
   $scope.writeData = () ->
@@ -110,13 +122,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $("span#writeFailure").show().delay(1500).fadeOut(500)
       return
 
-    $q.when(window.influx.writePoint($scope.writeSeriesName, values)).then (response) ->
+    $q.when(window.influxdb.writePoint($scope.writeSeriesName, values)).then (response) ->
       $scope.success("200 OK")
 
   $scope.readData = () ->
     $scope.data = []
 
-    $q.when(window.influx.query($scope.readQuery)).then (response) ->
+    $q.when(window.influxdb.query($scope.readQuery)).then (response) ->
       data = response
       data.forEach (datum) ->
         $scope.data.push
@@ -150,9 +162,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     datum.points.map (row) ->
       time: new Date(row[0])
       value: row[index]
-
-  if $scope.username && $scope.password && $scope.database
-    $scope.authenticate()
 ]
 
 adminApp.directive "lineChart", [() ->
