@@ -82,7 +82,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $scope.isDatabaseAdmin = true
       $scope.isClusterAdmin = false
       $scope.selectedPane = "data"
-      $scope.setCurrentInterface("example")
+      $scope.setCurrentInterface("default")
       $location.search({})
     , (response) ->
       $scope.authError(response.responseText)
