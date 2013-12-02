@@ -27,13 +27,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $("span#writeFailure").show().delay(1500).fadeOut(500)
       return
 
-    $q.when(parent.influx.writePoint($scope.writeSeriesName, values)).then (response) ->
+    $q.when(parent.influxdb.writePoint($scope.writeSeriesName, values)).then (response) ->
       $scope.success("200 OK")
 
   $scope.readData = () ->
     $scope.data = []
 
-    $q.when(window.parent.influx.query($scope.readQuery)).then (response) ->
+    $q.when(window.parent.influxdb.query($scope.readQuery)).then (response) ->
       data = response
       data.forEach (datum) ->
         $scope.data.push
