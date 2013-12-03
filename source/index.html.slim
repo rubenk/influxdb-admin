@@ -45,17 +45,41 @@
     div ng-show="authenticated"
       .row
         .twelve.columns
+          section ng-show="selectedPane == 'databases' && selectedDatabase != null && isClusterAdmin"
+            h2 Database: {{selectedDatabase}}
+            table.twelve.columns
+              thead
+                tr
+                  td Name
+                  td
+              tr ng-repeat="databaseUser in databaseUsers"
+                td
+                  a href="#" ng-click="" {{databaseUser.username}}
+                td style="text-align:right;"
+                  a ng-click="deleteDatabaseUser(databaseUser.username)"
+                    i.foundicon-remove
 
-          section ng-show="selectedPane == 'databases' && isClusterAdmin"
+            form
+              fieldset
+                legend Create a Database User
+                .row
+                  .large-3.columns
+                    input type="text" placeholder="Username" ng-model="newDbUser.username"
+                  .large-3.columns
+                    input type="password" placeholder="Password" ng-model="newDbUser.password"
+                  .large-6.columns
+                    button.tiny.button ng-click="createDatabaseUser()" Create
+
+          section ng-show="selectedPane == 'databases' && selectedDatabase == null && isClusterAdmin"
             h2 Databases
             table.twelve.columns
               thead
                 tr
-                  td Database Name
+                  td Name
                   td
               tr ng-repeat="database in databases"
                 td
-                  | {{database.name}}
+                  a href="#" ng-click="showDatabase(database)" {{database.name}}
                 td style="text-align:right;"
                   a ng-click="deleteDatabase(database.name)"
                     i.foundicon-remove
@@ -68,18 +92,6 @@
                     input type="text" placeholder="name" ng-model="newDatabaseName"
                   .large-9.columns
                     button.tiny.button ng-click="createDatabase()" Create
-            form
-              fieldset
-                legend Create a Database User
-                .row
-                  .large-3.columns
-                    input type="text" placeholder="Database Name" ng-model="newDbUser.database"
-                  .large-3.columns
-                    input type="text" placeholder="Username" ng-model="newDbUser.username"
-                  .large-3.columns
-                    input type="password" placeholder="Password" ng-model="newDbUser.password"
-                  .large-3.columns
-                    button.tiny.button ng-click="createDatabaseUser()" Create
 
           section ng-show="selectedPane == 'admins' && isClusterAdmin"
             h2 Cluster Admins

@@ -25,6 +25,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.selectedPane = "databases"
   $scope.newDbUser = {}
   $scope.interfaces = []
+  $scope.databaseUsers = []
 
   $scope.newAdminUsername = null
   $scope.newAdminPassword = null
@@ -107,9 +108,9 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $scope.getDatabases()
 
   $scope.createDatabaseUser = () ->
-    $q.when(window.influxdb.createUser($scope.newDbUser.database, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
+    $q.when(window.influxdb.createUser($scope.selectedDatabase, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
       $scope.newDbUser = {}
-      $scope.getDatabases()
+      $scope.getDatabaseUsers()
 
   $scope.deleteDatabase = (name) ->
     $q.when(window.influxdb.deleteDatabase(name)).then (response) ->
@@ -135,6 +136,18 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
     datum.points.map (row) ->
       time: new Date(row[0])
       value: row[index]
+
+  $scope.getDatabaseUsers = () ->
+    $q.when(window.influxdb.getDatabaseUsers($scope.selectedDatabase)).then (response) ->
+      $scope.databaseUsers = response
+
+  $scope.showDatabase = (database) ->
+    $scope.selectedDatabase = database.name
+    $scope.getDatabaseUsers()
+
+  $scope.username = "root"
+  $scope.password = "root"
+  $scope.authenticateAsClusterAdmin()
 ]
 
 adminApp.directive "lineChart", [() ->
