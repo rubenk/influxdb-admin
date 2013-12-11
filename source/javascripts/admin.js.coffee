@@ -144,10 +144,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
   $scope.showDatabase = (database) ->
     $scope.selectedDatabase = database.name
     $scope.getDatabaseUsers()
-
-  $scope.username = "root"
-  $scope.password = "root"
-  $scope.authenticateAsClusterAdmin()
 ]
 
 adminApp.directive "lineChart", [() ->
