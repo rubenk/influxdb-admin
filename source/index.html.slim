@@ -4,7 +4,7 @@
       dl.sub-nav style="margin-top:20px;"
         dt Connect As:
         dd ng-class="{active: !connectAsClusterAdmin}"
-          a ng-click="connectAsClusterAdmin = false" Database Admin
+          a ng-click="connectAsClusterAdmin = false" Database User
         dd ng-class="{active: connectAsClusterAdmin}"
           a ng-click="connectAsClusterAdmin = true" Cluster Admin
 
@@ -12,7 +12,7 @@
       span.label.alert#authFailure style="display:none;" {{authMessage}}
       form
         fieldset ng-show="connectAsClusterAdmin"
-          legend Connect as a Cluster Administrator
+          legend Connect
           .row
             .large-3.columns
               input type="text" placeholder="username" ng-model="username"
@@ -22,7 +22,7 @@
               button.tiny.button ng-click="authenticateAsClusterAdmin()" Connect
 
         fieldset ng-hide="connectAsClusterAdmin"
-          legend Connect as a Database Administrator
+          legend Connect
           .row
             .large-3.columns
               input type="text" placeholder="username" ng-model="username"
