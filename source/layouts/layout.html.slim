@@ -23,7 +23,7 @@ html
             a ng-click="selectedPane = 'admins'" Cluster Admins
           li.has-dropdown ng-class="{active: selectedPane == 'data'}"
 
-            a href="#" ng-click="" Interfaces
+            a href="#" ng-hide="isClusterAdmin" Interfaces
             ul.dropdown
               li ng-repeat="i in interfaces"
                 a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
