@@ -17,16 +17,6 @@ html
             .row
               .twelve.columns
                 h2 Data Interface
-                form
-                  fieldset
-                    legend Write Point
-                    label Time Series Name
-                    input type="text" ng-model="writeSeriesName"
-                    label Values
-                    textarea placeholder="{ ... }" ng-model="writeValues"
-                    button.tiny.button ng-click="writeData()" Write Point
-                    span.label.success#writeSuccess style="display:none; margin-left:20px;" {{successMessage}}
-                    span.label.alert#writeFailure style="display:none; margin-left:20px;" {{alertMessage}}
 
                 form
                   fieldset
@@ -50,3 +40,13 @@ html
                       tr ng-repeat="point in datum.points"
                         td ng-repeat="value in point track by $index" {{value}}
 
+                form
+                  fieldset
+                    legend Write Point
+                    label Time Series Name
+                    input type="text" ng-model="writeSeriesName"
+                    label Values
+                    textarea placeholder="{ ... }" ng-model="writeValues"
+                    button.tiny.button ng-click="writeData()" Write Point
+                    span.label.success#writeSuccess style="display:none; margin-left:20px;" {{successMessage}}
+                    span.label.alert#writeFailure style="display:none; margin-left:20px;" {{alertMessage}}
