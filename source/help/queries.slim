@@ -1,0 +1,32 @@
+div.modal-content.help
+  div
+    h4 Starting Simple
+    p
+      pre select value from response_times;
+  div
+    h4 Selecting A Range
+    p
+      pre select value from response_times where time > '2013-08-12 23:32:01.232' and time < '2013-08-13';
+
+  h4 Grouping By Time
+  p
+    pre select count(type) from events group by time(10m), type;
+
+  h3 Functions
+
+  ul
+    li: pre Count()
+    li: pre​Min()​​
+    li: pre​Max()​​
+    li: pre​Mean()​​
+    li: pre​Mode()​​
+    li: pre​Median()​​
+    li: pre​Distinct()​​
+    li: pre​Percentile()​​
+    li: pre​Histogram()
+    li: pre​Derivative()
+    li: pre​Sum()
+    li: pre​Stddev()​​
+    li: pre​First()/Last()
+
+  / p For More detailed information see our a(href="http://influxdb.org/docs/query_language/" target="_new")API Documentation.
