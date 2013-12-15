@@ -1,6 +1,8 @@
 @import "normalize";
 @import "foundation";
 @import "general_foundicons";
+@import "magnific-popup";
+@import "modal-help";
 
 iframe#explorer {
   width: 100%;
@@ -9,4 +11,3 @@ iframe#explorer {
   padding: 0px;
   overflow: hidden;
 }
-
