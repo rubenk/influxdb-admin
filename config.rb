@@ -34,6 +34,7 @@ end
 ###
 
 activate :livereload
+activate :syntax
 activate :sprockets
 activate :jasmine
 
