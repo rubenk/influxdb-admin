@@ -18,5 +18,4 @@ $ ->
   window.setHashParams = (params) ->
     angular.element(document.getElementsByTagName("body")[0]).scope().setHashParams(params)
 
-  $("a.modal-help-link").magnificPopup({type: 'ajax'})
   $(document).foundation();
