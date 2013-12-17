@@ -139,6 +139,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
 
   $scope.getDatabaseUsers = () ->
     $q.when(window.influxdb.getDatabaseUsers($scope.selectedDatabase)).then (response) ->
+      debugger
       $scope.databaseUsers = response
 
   $scope.showDatabase = (database) ->
