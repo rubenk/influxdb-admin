@@ -3,17 +3,13 @@
 #= require vendor/jquery.magnific-popup.min
 #= require_self
 
-# $(document).on("click", "a.modal-help-link", (event) ->
-#   $(@).magnificPopup({type: 'ajax'})
-#   event.preventDefault()
-#   console.log("hi")
-# );
 
-# $("a.modal-help-link").on("click", (event)->
-#   event.preventDefault();
-#   console.log("this...")
-#   console.log(@)
-# )
+$ ->
+  $("a.modal-help-link").on("click", (event)->
+    event.preventDefault()
+    $(@).magnificPopup({type: 'ajax'})
+    $(@).magnificPopup('open')
+  )
 
 adminApp = angular.module "adminApp", []
 
@@ -42,11 +38,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
 
     $q.when(parent.influxdb.writePoint($scope.writeSeriesName, values)).then (response) ->
       $scope.success("200 OK")
-
-  $scope.showQueryHelp = () ->
-    event.preventDefault()
-    $(event.toElement).magnificPopup({type: 'ajax'})
-    $(event.toElement).magnificPopup('open')
 
   $scope.readData = () ->
     $scope.data = []
