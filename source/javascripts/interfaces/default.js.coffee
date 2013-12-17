@@ -106,11 +106,12 @@ adminApp.directive "lineChart", [() ->
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
-      
+
       svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
-      
+
+      # Label y-axis
       svg.append("text")
         .attr("class", "y label")
         .attr("text-anchor", "end")
@@ -118,7 +119,7 @@ adminApp.directive "lineChart", [() ->
         .attr("dy", ".75em")
         .attr("transform", "rotate(-90)")
         .text("life expectancy (years)");
-      
+
       svg.append("path")
         .datum(data)
         .attr("class", "line")
