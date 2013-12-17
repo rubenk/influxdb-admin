@@ -1,45 +1,25 @@
-<%
-  functions = [
-      {:name => "count",      :desc => "returns the number of points", :example => "SELECT COUNT(column_name) FROM series_name ..."},
-      {:name => "min",        :desc => "returns the lowest value from the specified column over a given interval", :example => ""},
-      {:name => "max",        :desc => "returns the highest value from the specified column over a given interval", :example => ""},
-      {:name => "mean",       :desc => "returns the arithmetic mean (average) of the specified column over a given interval", :example => ""},
-      {:name => "mode",       :desc => "returns the most frequent value(s) of the specified column over a given intervaleturns the middle value from a sorted set of values for the specified column over a given interval", :example => ""},
-      {:name => "median",     :desc => "returns distinct values for the given column_name", :example => ""},
-      {:name => "distinct",   :desc => "returns distinct values for the given column", :example => ""},
-      {:name => "percentile", :desc => "returns the Nth percentile of a sorted set of values for the specified column over a given interval", :example => ""},
-      {:name => "histogram",  :desc => "requires at least one argument and at most two arguments. The first argument is the column name and the second argument is the bucket size. Bucket size defaults to 1.0 if it wasn’t specified.", :example => ""},
-      {:name => "derivative", :desc => "requires exactly one argument, which is a column name", :example => ""},
-      {:name => "sum",        :desc => "requires exactly one argument, which is a column name", :example => ""},
-      {:name => "stddev",     :desc => "requires exactly one argument, which is a column name", :example => ""},
-      {:name => "first/last", :desc => "FIRST() and LAST() require exactly one argument, which is a column name", :example => ""},
-    ]
-%>
+<% functions = ["count()", "min()", "max()", "mean()", "mode()", "median()", "distinct()", "percentile()", "histogram()", "derivative()", "sum()", "stddev()", "first()", "last()"] %>
 
 <div class="modal-content help">
-  <h4>Starting Simple</h4>
+  <h3>Example Queries</h3>
   <% code "sql" do %>
     select value from response_times;
-  <% end %>
 
-  <h4>Selecting A Range</h4>
-  <% code "sql" do %>
     select value from response_times where time > '2013-08-12 23:32:01.232' and time < '2013-08-13';
-  <% end %>
 
-  <h4>Grouping By Time</h4>
-  <% code "sql" do %>
     select count(type) from events group by time(10m);
+
+    -- 95th percentile of response times in 30 second intervals
+    select percentile(value, 95) from response_times group by time(30s);
+
+    -- count the number of distinct users who make api requests
+    select count(distinct(user_id)) from api-requests;
   <% end %>
 
-  <h4>Functions</h3>
-  <ul>
-    <% functions.each do |function| %>
-      <li>
-        <pre><%= function[:name] %>()</pre>
-      </li>
-    <% end %>
-  </ul>
+  <p>
+    InfluxDB supports the following aggregate functions:
+    <p><pre><%= functions.join(", ") %>.</pre></p>
+  </p>
 
   <p>
     For more information see the <a href="http://influxdb.org/docs/query_language" target="_new">Query Language Documentation</a>.
