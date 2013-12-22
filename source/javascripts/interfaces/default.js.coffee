@@ -1,6 +1,15 @@
 #= require vendor/jquery-2.0.3
 #= require vendor/angular
+#= require vendor/jquery.magnific-popup.min
 #= require_self
+
+
+$ ->
+  $("a.modal-help-link").on("click", (event)->
+    event.preventDefault()
+    $(@).magnificPopup({type: 'ajax'})
+    $(@).magnificPopup('open')
+  )
 
 adminApp = angular.module "adminApp", []
 

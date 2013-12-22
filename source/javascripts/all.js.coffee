@@ -1,6 +1,7 @@
 #= require vendor/custom.modernizr
 #= require vendor/jquery-2.0.3
 #= require vendor/angular
+#= require vendor/jquery.magnific-popup.min
 #= require admin
 #= require_self
 

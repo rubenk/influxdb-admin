@@ -1,0 +1,28 @@
+<% functions = ["count()", "min()", "max()", "mean()", "mode()", "median()", "distinct()", "percentile()", "histogram()", "derivative()", "sum()", "stddev()", "first()", "last()"] %>
+
+<div class="modal-content help">
+  <h3>Example Queries</h3>
+  <% code "sql" do %>
+    select value from response_times;
+
+    select value from response_times where time > '2013-08-12 23:32:01.232' and time < '2013-08-13';
+
+    select count(type) from events group by time(10m);
+
+    -- 95th percentile of response times in 30 second intervals
+    select percentile(value, 95) from response_times group by time(30s);
+
+    -- count the number of distinct users who make api requests
+    select count(distinct(user_id)) from api-requests;
+  <% end %>
+
+  <p>
+    InfluxDB supports the following aggregate functions:
+    <p><pre><%= functions.join(", ") %>.</pre></p>
+  </p>
+
+  <p>
+    For more information see the <a href="http://influxdb.org/docs/query_language" target="_new">Query Language Documentation</a>.
+  </p>
+
+</div>

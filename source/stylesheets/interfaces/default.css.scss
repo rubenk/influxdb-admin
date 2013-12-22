@@ -1,6 +1,9 @@
 @import "normalize";
 @import "foundation";
 @import "general_foundicons";
+@import "magnific-popup";
+@import "modal-help";
+@import "highlighting";
 
 .axis path, .axis line {
   fill: none;
@@ -12,4 +15,11 @@
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+
+p.input_help {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: -1rem;
+  float: right;
 }

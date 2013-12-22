@@ -22,6 +22,7 @@ page "/play.html", :layout => false
 
 with_layout false do
   page "/interfaces/*"
+  page "/help/*"
 end
 
 # Proxy pages (http://middlemanapp.com/dynamic-pages/)
@@ -33,6 +34,7 @@ end
 ###
 
 activate :livereload
+activate :syntax
 activate :sprockets
 activate :jasmine
 
