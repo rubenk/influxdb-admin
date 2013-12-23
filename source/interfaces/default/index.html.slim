@@ -33,7 +33,7 @@ html
                   h4
                     | {{datum.name}}
 
-                  line-chart data="graph" ng-repeat="graph in datum.graphs"
+                  line-chart data="graph.points" series-name="graph.name" ng-repeat="graph in datum.graphs"
 
                   table.columns.twelve
                     thead
