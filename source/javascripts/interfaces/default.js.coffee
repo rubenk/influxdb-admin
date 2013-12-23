@@ -59,7 +59,8 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
 
   $scope.columnPoints = (datum, column) ->
     index = datum.columns.indexOf(column)
-    datum.points.map (row) ->
+    name: column,
+    points: datum.points.map (row) ->
       time: new Date(row[0])
       value: row[index]
 
@@ -72,15 +73,13 @@ adminApp.directive "lineChart", [() ->
   replace: false,
   scope:
     data: "=data",
+    seriesName: "=seriesName"
   link: (scope, element, attrs) ->
-    console.log scope.data
-
     margin = parseInt(attrs.margin) || 20
     barHeight = parseInt(attrs.barHeight) || 20
     barPadding = parseInt(attrs.barPadding) || 5
 
-    scope.render = (data) ->
-      console.log data
+    scope.render = (data, seriesName) ->
       return if (!data)
 
       margin = {top: 0, right: 0, bottom: 30, left: 50}
@@ -118,13 +117,13 @@ adminApp.directive "lineChart", [() ->
         .attr("y", 6)
         .attr("dy", ".75em")
         .attr("transform", "rotate(-90)")
-        .text("life expectancy (years)");
+        .text(seriesName);
 
       svg.append("path")
         .datum(data)
         .attr("class", "line")
         .attr("d", line)
 
-    scope.render(scope.data)
+    scope.render(scope.data, scope.seriesName)
 ]
 
