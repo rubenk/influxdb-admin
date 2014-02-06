@@ -1,16 +1,16 @@
-adminApp = angular.module "adminApp", []
+adminApp = angular.module "adminApp", ["ngCookies"]
 
 adminApp.config ["$locationProvider", ($locationProvider) ->
   $locationProvider.html5Mode(true)
   $locationProvider.hashPrefix('!')
 ]
 
-adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $location, $q) ->
+adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStore", ($scope, $location, $q, $cookieStore) ->
   $scope.host = $location.search()["host"] || $location.host()
   $scope.port = $location.search()["port"] || if $scope.host == "sandbox.influxdb.org" then 9061 else 8086
-  $scope.database = $location.search()["database"]
-  $scope.username = $location.search()["username"]
-  $scope.password = $location.search()["password"]
+  $scope.database = $location.search()["database"] || $cookieStore.get("database")
+  $scope.username = $location.search()["username"] || $cookieStore.get("username")
+  $scope.password = $location.search()["password"] || $cookieStore.get("password")
   $scope.authenticated = false
   $scope.databases = []
   $scope.admins = []
@@ -65,6 +65,9 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $scope.getDatabases()
       $scope.getClusterAdmins()
       $scope.selectedPane = "databases"
+      $cookieStore.put("username", $scope.username)
+      $cookieStore.put("password", $scope.password)
+
       $location.search({})
     , (response) ->
       $scope.authError(response.responseText)
@@ -87,6 +90,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
       $location.search({})
     , (response) ->
       $scope.authError(response.responseText)
+
+  $scope.storeAuthenticatedCredentials = () ->
+    $cookieStore.put("username", $scope.username)
+    $cookieStore.put("password", $scope.password)
+    $cookieStore.put("database", $scope.database)
+    $cookieStore.put("host", $scope.host)
+    $cookieStore.put("port", $scope.port)
 
   $scope.getDatabases = () ->
     $q.when(window.influxdb.getDatabases()).then (response) ->
