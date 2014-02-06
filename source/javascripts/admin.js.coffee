@@ -12,6 +12,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.username = $location.search()["username"] || $cookieStore.get("username")
   $scope.password = $location.search()["password"] || $cookieStore.get("password")
   $scope.authenticated = false
+  $scope.isClusterAdmin = false
   $scope.databases = []
   $scope.admins = []
   $scope.data = []
@@ -49,6 +50,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.setCurrentInterface = (i) ->
     $("iframe").prop("src", "/interfaces/#{i}")
     $scope.selectedPane = "data"
+
+  $scope.authenticateUser = () ->
+    if $scope.database
+      $scope.authenticateAsDatabaseAdmin()
+    else
+      $scope.authenticateAsClusterAdmin()
 
   $scope.authenticateAsClusterAdmin = () ->
     window.influxdb = new InfluxDB
@@ -154,57 +161,4 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.showDatabase = (database) ->
     $scope.selectedDatabase = database.name
     $scope.getDatabaseUsers()
-]
-
-adminApp.directive "lineChart", [() ->
-  restrict: "E",
-  replace: false,
-  scope:
-    data: "=data",
-  link: (scope, element, attrs) ->
-    console.log scope.data
-
-    margin = parseInt(attrs.margin) || 20
-    barHeight = parseInt(attrs.barHeight) || 20
-    barPadding = parseInt(attrs.barPadding) || 5
-
-    scope.render = (data) ->
-      console.log data
-      return if (!data)
-
-      margin = {top: 0, right: 0, bottom: 30, left: 50}
-      width = 1086 - margin.left - margin.right
-      height = 200 - margin.top - margin.bottom
-
-      x = d3.time.scale().range([0, width])
-      y = d3.scale.linear().range([height, 0])
-      xAxis = d3.svg.axis().scale(x).orient("bottom")
-      yAxis = d3.svg.axis().scale(y).orient("left").ticks(5)
-      line = d3.svg.line().x((d) -> x(d.time)).y((d) -> y(d.value))
-
-      svg = d3.select(element[0]).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-
-      x.domain(d3.extent(data, (d) -> d.time ))
-      y.domain(d3.extent(data, (d) -> d.value ))
-
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-
-      svg.append("path")
-        .datum(data)
-        .attr("class", "line")
-        .attr("d", line)
-
-    scope.render(scope.data)
-
 ]

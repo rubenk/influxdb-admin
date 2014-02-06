@@ -1,27 +1,9 @@
 .row
   .twelve.columns
     section ng-hide="authenticated"
-      dl.sub-nav style="margin-top:20px;"
-        dt Connect As:
-        dd ng-class="{active: !connectAsClusterAdmin}"
-          a ng-click="connectAsClusterAdmin = false" Database User
-        dd ng-class="{active: connectAsClusterAdmin}"
-          a ng-click="connectAsClusterAdmin = true" Cluster Admin
-
-    section ng-hide="authenticated"
       span.label.alert#authFailure style="display:none;" {{authMessage}}
       form
-        fieldset ng-show="connectAsClusterAdmin"
-          legend Connect
-          .row
-            .large-3.columns
-              input type="text" placeholder="username" ng-model="username"
-            .large-3.columns
-              input type="password" placeholder="password" ng-model="password"
-            .large-6.columns
-              button.tiny.button ng-click="authenticateAsClusterAdmin()" Connect
-
-        fieldset ng-hide="connectAsClusterAdmin"
+        fieldset
           legend Connect
           .row
             .large-3.columns
@@ -29,9 +11,9 @@
             .large-3.columns
               input type="password" placeholder="password" ng-model="password"
             .large-3.columns
-              input type="text" placeholder="database" ng-model="database"
+              input type="text" placeholder="database (optional)" ng-model="database"
             .large-3.columns
-              button.tiny.button ng-click="authenticateAsDatabaseAdmin()" Connect
+              button.tiny.button ng-click="authenticateUser()" Connect
 
         fieldset
           legend Hostname and Port Settings

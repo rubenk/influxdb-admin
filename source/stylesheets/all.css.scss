@@ -2,6 +2,25 @@
 @import "foundation";
 @import "general_foundicons";
 
+section.nav {
+  background-color: #333333;
+
+  ul.title-area {
+    li.name {
+      margin-right: 20px;
+
+      img {
+        margin: 10px 0 0 20px;
+      }
+    }
+  }
+
+  nav.top-bar {
+    background-color: #333333;
+  }
+}
+
+
 iframe#explorer {
   width: 100%;
   background-color: transparent;

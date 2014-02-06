@@ -6,30 +6,34 @@ html
     title InfluxDB Administration
 
     = stylesheet_link_tag "all"
+    = stylesheet_link_tag "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
     = javascript_include_tag "all"
     = javascript_include_tag "http://get.influxdb.org/influxdb-0.0.7.js"
 
   body class="#{page_classes}" ng-app="adminApp" ng-controller="AdminIndexCtrl"
-    nav.top-bar data-topbar=true
-      ul.title-area
-        li.name
-          h1
-            a href="/" InfluxDB
-      section.top-bar-section
-        ul.left ng-show="authenticated"
-          li ng-class="{active: selectedPane == 'databases'}" ng-show="isClusterAdmin"
-            a ng-click="selectedPane = 'databases'" Databases
-          li ng-class="{active: selectedPane == 'admins'}" ng-show="isClusterAdmin"
-            a ng-click="selectedPane = 'admins'" Cluster Admins
-          li.has-dropdown ng-class="{active: selectedPane == 'data'}"
+    section.nav
+      .row
+        nav.top-bar data-topbar=true
+          ul.title-area
+            li.name
+              a href="/"
+                img src="/images/influxdb-light-24px.png"
 
-            a href="#" ng-hide="isClusterAdmin" Interfaces
-            ul.dropdown
-              li ng-repeat="i in interfaces"
-                a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
-        ul.right
-          li.has-form
-            a.button ng-show="authenticated" ng-click="authenticated=false" Disconnect
+          section.top-bar-section
+            ul.left ng-show="authenticated"
+              li ng-class="{active: selectedPane == 'databases'}" ng-show="isClusterAdmin"
+                a ng-click="selectedPane = 'databases'" Databases
+              li ng-class="{active: selectedPane == 'admins'}" ng-show="isClusterAdmin"
+                a ng-click="selectedPane = 'admins'" Cluster Admins
+              li.has-dropdown ng-class="{active: selectedPane == 'data'}"
+
+                a href="#" ng-hide="isClusterAdmin" Interfaces
+                ul.dropdown
+                  li ng-repeat="i in interfaces"
+                    a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
+            ul.right
+              li.has-form
+                a.button ng-show="authenticated" ng-click="authenticated=false" Disconnect
 
     section.main
       = yield
