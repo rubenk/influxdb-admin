@@ -1,1 +1,1 @@
-rvm use 2.0.0-p247@influxdb-admin --create
+rvm use ruby-2.1.0@influxdb-admin --create
