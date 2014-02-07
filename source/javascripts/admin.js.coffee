@@ -125,9 +125,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
 
   $scope.createClusterAdmin = () ->
     $q.when(window.influxdb.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
+      $scope.alertSuccess("Successfully created user: #{$scope.newAdminUsername}")
       $scope.newAdminUsername = null
       $scope.newAdminPassword = null
       $scope.getClusterAdmins()
+    , (response) ->
+      $scope.alertFailure("Failed to create user: #{response.responseText}")
 
   $scope.createDatabase = () ->
     $q.when(window.influxdb.createDatabase($scope.newDatabaseName)).then (response) ->
