@@ -59,7 +59,7 @@
                 tr
                   td Name
                   td
-              tr ng-repeat="database in databases"
+              tr ng-repeat="database in databases | orderBy:'name'"
                 td
                   a href="#" ng-click="showDatabase(database)" {{database.name}}
                 td style="text-align:right;"
