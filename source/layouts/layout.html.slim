@@ -36,6 +36,14 @@ html
                 a.button ng-show="authenticated" ng-click="authenticated=false" Disconnect
 
     section.main
+      #alert-success.row style="margin-top: 10px; display: none;"
+        .large-12.columns
+          .alert-box.success data-alert=""
+            ' {{successMessage}}
+      #alert-failure.row style="margin-top: 10px; display: none;"
+        .large-12.columns
+          .alert-box.alert data-alert=""
+            ' {{failureMessage}}
       = yield
 
   = javascript_include_tag "vendor/foundation.min"
