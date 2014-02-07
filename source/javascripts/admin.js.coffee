@@ -137,11 +137,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     , (response) ->
       $scope.alertFailure("Failed to create database: #{response.responseText}")
 
-
   $scope.createDatabaseUser = () ->
     $q.when(window.influxdb.createUser($scope.selectedDatabase, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
+      $scope.alertSuccess("Successfully created user: #{$scope.newDbUser.username}")
       $scope.newDbUser = {}
       $scope.getDatabaseUsers()
+    , (response) ->
+      $scope.alertFailure("Failed to create user: #{response.responseText}")
 
   $scope.deleteDatabase = (name) ->
     $q.when(window.influxdb.deleteDatabase(name)).then (response) ->
