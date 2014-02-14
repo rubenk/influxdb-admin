@@ -25,9 +25,9 @@
             .large-8.columns
 
     div ng-show="authenticated"
-      .row
-        .twelve.columns
-          section ng-show="selectedPane == 'databases' && selectedDatabase != null && isClusterAdmin"
+      section ng-show="selectedPane == 'databases' && selectedDatabase != null && isClusterAdmin"
+        .row
+          .large-12.columns
             h2 Database: {{selectedDatabase}}
             table.twelve.columns
               thead
@@ -41,6 +41,8 @@
                   a ng-click="deleteDatabaseUser(databaseUser.username)"
                     i.foundicon-remove
 
+        .row
+          .large-12.columns
             form
               fieldset
                 legend Create a Database User
@@ -52,7 +54,9 @@
                   .large-6.columns
                     button.tiny.button ng-click="createDatabaseUser()" Create
 
-          section ng-show="selectedPane == 'databases' && selectedDatabase == null && isClusterAdmin"
+      section ng-show="selectedPane == 'databases' && selectedDatabase == null && isClusterAdmin"
+        .row
+          .large-12.columns
             h2 Databases
             table.twelve.columns
               thead
@@ -66,6 +70,8 @@
                   a ng-click="deleteDatabase(database.name)"
                     i.foundicon-remove
 
+        .row
+          .large-12.columns
             form
               fieldset
                 legend Create a Database
@@ -75,7 +81,9 @@
                   .large-9.columns
                     button.tiny.button ng-click="createDatabase()" Create
 
-          section ng-show="selectedPane == 'admins' && isClusterAdmin"
+      section ng-show="selectedPane == 'admins' && isClusterAdmin"
+        .row
+          .large-12.columns
             h2 Cluster Admins
             table.twelve.columns
               thead
@@ -89,6 +97,8 @@
                   a ng-click="deleteAdminUser(admin.username)"
                     i.foundicon-remove
 
+        .row
+          .large-12.columns
             form
               fieldset
                 legend Create a Cluster Admin
