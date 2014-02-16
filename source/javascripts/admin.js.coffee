@@ -27,6 +27,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.newDbUser = {}
   $scope.interfaces = []
   $scope.databaseUsers = []
+  $scope.databaseUser = null
   $scope.successMessage = ""
   $scope.failureMessage = ""
 
@@ -180,7 +181,15 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $q.when(window.influxdb.getDatabaseUsers($scope.selectedDatabase)).then (response) ->
       $scope.databaseUsers = response
 
+  $scope.getDatabaseUser = () ->
+    $q.when(window.influxdb.getDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser)).then (response) ->
+      $scope.databaseUser = response
+
   $scope.showDatabase = (database) ->
     $scope.selectedDatabase = database.name
     $scope.getDatabaseUsers()
+
+  $scope.showDatabaseUser = (databaseUser) ->
+    $scope.selectedDatabaseUser = databaseUser.name
+    $scope.getDatabaseUser()
 ]

@@ -25,7 +25,13 @@
             .large-8.columns
 
     div ng-show="authenticated"
-      section ng-show="selectedPane == 'databases' && selectedDatabase != null && isClusterAdmin"
+      section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
+        .row
+          .large-12.columns
+            h2 User: {{selectedDatabaseUser}}
+
+    div ng-show="authenticated"
+      section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser == null && isClusterAdmin"
         .row
           .large-12.columns
             h2 Database: {{selectedDatabase}}
@@ -33,12 +39,15 @@
               thead
                 tr
                   td Name
+                  td Admin?
                   td
               tr ng-repeat="databaseUser in databaseUsers"
                 td
-                  a href="#" ng-click="" {{databaseUser.username}}
+                  a href="#" ng-click="showDatabaseUser(databaseUser)" {{databaseUser.name}}
+                td
+                  ' {{databaseUser.isAdmin}}
                 td style="text-align:right;"
-                  a ng-click="deleteDatabaseUser(databaseUser.username)"
+                  a ng-click="deleteDatabaseUser(databaseUser.name)"
                     i.foundicon-remove
 
         .row
