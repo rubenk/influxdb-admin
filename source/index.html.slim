@@ -59,6 +59,8 @@
               h3 Settings &amp; Properties
               h5
                 ' {{databaseUsers.length}} users
+              hr
+              a.button.alert Delete Database ng-click="deleteDatabase()"
 
         div ng-show="selectedSubPane == 'users'"
           section ng-show="selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
@@ -104,7 +106,7 @@
                     td
                       ' {{databaseUser.isAdmin}}
                     td style="text-align:right;"
-                      a ng-click="deleteDatabaseUser(databaseUser.name)"
+                      a ng-click="deleteDatabaseUser(databaseUser.name)" ng-confirm-click="Are you sure you want to delete this user?"
                         i.foundicon-remove
 
             .row

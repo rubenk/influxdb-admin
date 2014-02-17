@@ -235,4 +235,22 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       $scope.getDatabaseUsers()
     , (response) ->
       $scope.alertFailure("Failed to update database user: #{response.responseText}")
+
+  $scope.deleteDatabaseUser = (username) ->
+    $q.when(window.influxdb.deleteDatabaseUser($scope.selectedDatabase, username)).then (response) ->
+      $scope.alertSuccess("Successfully delete user: #{username}")
+      $scope.getDatabaseUsers()
+    , (response) ->
+      $scope.alertFailure("Failed to delete user: #{response.responseText}")
+]
+
+adminApp.directive "ngConfirmClick", [ ->
+  priority: -1
+  restrict: "A"
+  link: (scope, element, attrs) ->
+    element.bind "click", (e) ->
+      message = attrs.ngConfirmClick
+      if message and not confirm(message)
+        e.stopImmediatePropagation()
+        e.preventDefault()
 ]
