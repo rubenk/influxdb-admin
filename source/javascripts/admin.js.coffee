@@ -192,4 +192,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name
     $scope.getDatabaseUser()
+
+  $scope.updateDatabaseUser = () ->
+    data = {admin: $scope.databaseUser.isAdmin}
+    $q.when(window.influxdb.updateDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser, data)).then (response) ->
+      $scope.alertSuccess("Successfully updated database user '#{$scope.selectedDatabaseUser}'")
+      $scope.getDatabaseUsers()
+    , (response) ->
+      $scope.alertFailure("Failed to update database user: #{response.responseText}")
 ]

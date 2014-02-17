@@ -28,7 +28,16 @@
       section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
         .row
           .large-12.columns
-            h2 User: {{selectedDatabaseUser}}
+            h2
+              i.fa.fa-user
+              | &nbsp;{{databaseUser.name}}
+            .row
+              .large-6.columns
+                input type="checkbox" ng-model="databaseUser.isAdmin"
+                  label Admin?
+            .row
+              .large-6.columns
+                button.small.button ng-click="updateDatabaseUser()" Update User
 
     div ng-show="authenticated"
       section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser == null && isClusterAdmin"
