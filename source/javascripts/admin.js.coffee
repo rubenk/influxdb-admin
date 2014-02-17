@@ -34,6 +34,9 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.newAdminUsername = null
   $scope.newAdminPassword = null
 
+  $scope.newUserPassword = null
+  $scope.newUserPasswordConfirmation = null
+
   window.influxdb = null
 
   $scope.alertSuccess = (msg) ->
@@ -185,13 +188,32 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $q.when(window.influxdb.getDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser)).then (response) ->
       $scope.databaseUser = response
 
+  $scope.showDatabases = () ->
+    $scope.selectedPane = 'databases'
+    $scope.selectedDatabase = null
+    $scope.selectedDatabaseUser = null
+
   $scope.showDatabase = (database) ->
     $scope.selectedDatabase = database.name
+    $scope.selectedDatabaseUser = null
+    $scope.getDatabaseUsers()
+
+  $scope.showDatabaseUsers = () ->
+    $scope.selectedDatabaseUser = null
     $scope.getDatabaseUsers()
 
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name
     $scope.getDatabaseUser()
+
+  $scope.changeDbUserPassword = () ->
+    if $scope.dbUserPassword != $scope.dbUserPasswordConfirmation
+      $scope.alertFailure("Sorry, the passwords don't match.")
+    else if $scope.dbUserPassword == null or $scope.dbUserPassword == ""
+      $scope.alertFailure("Sorry, passwords cannot be blank.")
+    else
+      $scope.dbUserPassword = null
+      $scope.dbUserPasswordConfirmation = null
 
   $scope.updateDatabaseUser = () ->
     data = {admin: $scope.databaseUser.isAdmin}

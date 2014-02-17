@@ -20,6 +20,47 @@ section.nav {
   }
 }
 
+i.back-arrow {
+  position: absolute;
+  left: -20px;
+  font-size: 25px;
+  top: 20px;
+  color: #ccc;
+
+  &:hover {
+    color: #008cba;
+  }
+}
+
+section#database-header {
+  border-bottom: 1px solid grey;
+  margin-bottom: 20px;
+
+  h2 i.fa-floppy-o {
+    margin-right: 10px;
+  }
+
+  // a.button {
+    // float: right;
+    // // margin: 10px 0 0 10px;
+    // font-size: 15px
+  // }
+
+  ul.button-group {
+    margin-top: 10px;
+    float: right;
+
+    a {
+      font-size: 15px;
+      margin-bottom: 0;
+
+      &.active {
+        color: white;
+        background-color: #0090b9;
+      }
+    }
+  }
+}
 
 iframe#explorer {
   width: 100%;
