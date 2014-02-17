@@ -26,6 +26,33 @@
 
     div ng-show="authenticated"
       div ng-show="selectedPane == 'databases'"
+        section ng-show="selectedDatabase == null && isClusterAdmin"
+          .row
+            .large-12.columns
+              h2 Databases
+              table.twelve.columns
+                thead
+                  tr
+                    td Name
+                    td
+                tr ng-repeat="database in databases | orderBy:'name'"
+                  td
+                    a href="#" ng-click="showDatabase(database)" {{database.name}}
+                  td style="text-align:right;"
+                    a ng-click="deleteDatabase(database.name)"
+                      i.foundicon-remove
+
+          .row
+            .large-12.columns
+              form
+                fieldset
+                  legend Create a Database
+                  .row
+                    .large-3.columns
+                      input type="text" placeholder="name" ng-model="newDatabaseName"
+                    .large-9.columns
+                      button.tiny.button ng-click="createDatabase()" Create
+
         section#database-header ng-show="selectedDatabase != null"
           .row
             .large-12.columns
@@ -37,7 +64,7 @@
                   a.button.secondary.tiny ng-click="showDbContinuousQueries()" title="Continuous Queries" ng-class="{active: selectedSubPane == 'continuousQueries'}"
                     i.fa.fa-refresh
                 li
-                  a.button.secondary.tiny ng-click="showDbSettings()" title="Settings"
+                  a.button.secondary.tiny ng-click="showDbSettings()" ng-class="{active: selectedSubPane == 'settings'}" title="Settings"
                     i.fa.fa-gears
               h2
                 i.icon-database
@@ -60,7 +87,7 @@
               h5
                 ' {{databaseUsers.length}} users
               hr
-              a.button.alert Delete Database ng-click="deleteDatabase()"
+              a.button.alert ng-click="deleteDatabase(selectedDatabase)" ng-confirm-click="Are you sure you want to delete this database?" Delete Database
 
         div ng-show="selectedSubPane == 'users'"
           section ng-show="selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
@@ -121,33 +148,6 @@
                         input type="password" placeholder="Password" ng-model="newDbUser.password"
                       .large-6.columns
                         button.tiny.button ng-click="createDatabaseUser()" Create
-
-          section ng-show="selectedDatabase == null && isClusterAdmin"
-            .row
-              .large-12.columns
-                h2 Databases
-                table.twelve.columns
-                  thead
-                    tr
-                      td Name
-                      td
-                  tr ng-repeat="database in databases | orderBy:'name'"
-                    td
-                      a href="#" ng-click="showDatabase(database)" {{database.name}}
-                    td style="text-align:right;"
-                      a ng-click="deleteDatabase(database.name)"
-                        i.foundicon-remove
-
-            .row
-              .large-12.columns
-                form
-                  fieldset
-                    legend Create a Database
-                    .row
-                      .large-3.columns
-                        input type="text" placeholder="name" ng-model="newDatabaseName"
-                      .large-9.columns
-                        button.tiny.button ng-click="createDatabase()" Create
 
       section ng-show="selectedPane == 'admins' && isClusterAdmin"
         .row

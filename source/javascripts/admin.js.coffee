@@ -157,6 +157,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $q.when(window.influxdb.deleteDatabase(name)).then (response) ->
       $scope.alertSuccess("Successfully removed database: #{name}")
       $scope.getDatabases()
+      $scope.showDatabases()
     , (response) ->
       $scope.alertFailure("Failed to remove database: #{response.responseText}")
 
