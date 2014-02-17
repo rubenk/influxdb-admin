@@ -34,9 +34,16 @@ html
                 ul.dropdown
                   li ng-repeat="i in interfaces"
                     a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
-            ul.right
+            ul.right ng-show="authenticated"
               li.has-form
-                a.button ng-show="authenticated" ng-click="authenticated=false" Disconnect
+                a.button ng-click="authenticated=false" Disconnect
+            ul.right.status ng-show="authenticated"
+              li
+                i.fa.fa-user
+                ' {{username}}
+              li
+                i.icon-database-alt2
+                ' {{host}}:{{port}}
 
     section.main
       #alert-success.row style="margin-top: 10px; display: none;"

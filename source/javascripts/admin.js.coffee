@@ -24,6 +24,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.authMessage = ""
   $scope.queryMessage = ""
   $scope.selectedPane = "databases"
+  $scope.selectedSubPane = "users"
   $scope.newDbUser = {}
   $scope.interfaces = []
   $scope.databaseUsers = []
@@ -190,6 +191,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
 
   $scope.showDatabases = () ->
     $scope.selectedPane = 'databases'
+    $scope.selectedSubPane = 'users'
     $scope.selectedDatabase = null
     $scope.selectedDatabaseUser = null
 
@@ -200,7 +202,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
 
   $scope.showDatabaseUsers = () ->
     $scope.selectedDatabaseUser = null
+    $scope.selectedSubPane = "users"
     $scope.getDatabaseUsers()
+
+  $scope.showDbContinuousQueries = () ->
+    $scope.selectedDatabaseUser = null
+    $scope.selectedSubPane = "continuousQueries"
+    $scope.getDbContinuousQueries()
 
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name

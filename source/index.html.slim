@@ -25,108 +25,121 @@
             .large-8.columns
 
     div ng-show="authenticated"
-      section#database-header ng-show="selectedPane == 'databases' && selectedDatabase != null"
-        .row
-          .large-12.columns
-            ul.button-group.radius
-              li.active
-                a.button.secondary.tiny ng-click="showDatabaseUsers()" ng-class="{active: selectedDatabase != null}" title="Users"
-                  i.fa.fa-users
-              li
-                a.button.secondary.tiny ng-click="showDatabaseContinuousQueries()" title="Continuous Queries"
-                  i.fa.fa-refresh
-              li
-                a.button.secondary.tiny ng-click="showDatabaseSettings()" title="Settings"
-                  i.fa.fa-gears
-            h2
-              i.fa.fa-floppy-o
-              ' {{selectedDatabase}}
+      div ng-show="selectedPane == 'databases'"
+        section#database-header ng-show="selectedDatabase != null"
+          .row
+            .large-12.columns
+              ul.button-group.radius
+                li.active
+                  a.button.secondary.tiny ng-click="showDatabaseUsers()" ng-class="{active: selectedSubPane == 'users'}" title="Users"
+                    i.fa.fa-users
+                li
+                  a.button.secondary.tiny ng-click="showDbContinuousQueries()" title="Continuous Queries" ng-class="{active: selectedSubPane == 'continuousQueries'}"
+                    i.fa.fa-refresh
+                li
+                  a.button.secondary.tiny ng-click="showDbSettings()" title="Settings"
+                    i.fa.fa-gears
+              h2
+                i.icon-database
+                ' {{selectedDatabase}}
 
-      section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
-        .row
-          .large-12.columns
-            i.back-arrow.fa.fa-chevron-left
-            h3
-              i.fa.fa-user
-              | &nbsp;{{databaseUser.name}}
+        div ng-show="selectedSubPane == 'continuousQueries'"
+          .row
+            .large-12.columns
+              h3 Continuous Queries
+              table.twelve.columns
+                thead
+                  tr
+                    td Query
+                    td
+
+
+        div ng-show="selectedSubPane == 'users'"
+          section ng-show="selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"
             .row
-              .large-6.columns
-                fieldset
-                  input type="checkbox" ng-model="databaseUser.isAdmin"
-                    label Admin?
+              .large-12.columns
+                i.back-arrow.fa.fa-chevron-left
+                h3
+                  i.fa.fa-user
+                  | &nbsp;{{databaseUser.name}}
+                .row
+                  .large-6.columns
+                    fieldset
+                      input type="checkbox" ng-model="databaseUser.isAdmin"
+                        label Admin?
+                .row
+                  .large-6.columns
+                    button.small.button ng-click="updateDatabaseUser()" Update User
+
+                form
+                  fieldset
+                    legend Change Password
+                    .row
+                      .large-3.columns
+                        input type="password" placeholder="Password" ng-model="dbUserPassword"
+                      .large-3.columns
+                        input type="password" placeholder="Password Confirmation" ng-model="dbUserPasswordConfirmation"
+                      .large-6.columns
+                        button.tiny.button ng-click="changeDbUserPassword()" Create
+
+          section ng-show="selectedDatabase != null && selectedDatabaseUser == null && isClusterAdmin"
             .row
-              .large-6.columns
-                button.small.button ng-click="updateDatabaseUser()" Update User
+              .large-12.columns
+                h3 Database Users
+                table.twelve.columns
+                  thead
+                    tr
+                      td Name
+                      td Admin?
+                      td
+                  tr ng-repeat="databaseUser in databaseUsers"
+                    td
+                      a href="#" ng-click="showDatabaseUser(databaseUser)" {{databaseUser.name}}
+                    td
+                      ' {{databaseUser.isAdmin}}
+                    td style="text-align:right;"
+                      a ng-click="deleteDatabaseUser(databaseUser.name)"
+                        i.foundicon-remove
 
-            form
-              fieldset
-                legend Change Password
-                .row
-                  .large-3.columns
-                    input type="password" placeholder="Password" ng-model="dbUserPassword"
-                  .large-3.columns
-                    input type="password" placeholder="Password Confirmation" ng-model="dbUserPasswordConfirmation"
-                  .large-6.columns
-                    button.tiny.button ng-click="changeDbUserPassword()" Create
+            .row
+              .large-12.columns
+                form
+                  fieldset
+                    legend Create a New Database User
+                    .row
+                      .large-3.columns
+                        input type="text" placeholder="Username" ng-model="newDbUser.username"
+                      .large-3.columns
+                        input type="password" placeholder="Password" ng-model="newDbUser.password"
+                      .large-6.columns
+                        button.tiny.button ng-click="createDatabaseUser()" Create
 
-      section ng-show="selectedPane == 'databases' && selectedDatabase != null && selectedDatabaseUser == null && isClusterAdmin"
-        .row
-          .large-12.columns
-            h3 Database Users
-            table.twelve.columns
-              thead
-                tr
-                  td Name
-                  td Admin?
-                  td
-              tr ng-repeat="databaseUser in databaseUsers"
-                td
-                  a href="#" ng-click="showDatabaseUser(databaseUser)" {{databaseUser.name}}
-                td
-                  ' {{databaseUser.isAdmin}}
-                td style="text-align:right;"
-                  a ng-click="deleteDatabaseUser(databaseUser.name)"
-                    i.foundicon-remove
+          section ng-show="selectedDatabase == null && isClusterAdmin"
+            .row
+              .large-12.columns
+                h2 Databases
+                table.twelve.columns
+                  thead
+                    tr
+                      td Name
+                      td
+                  tr ng-repeat="database in databases | orderBy:'name'"
+                    td
+                      a href="#" ng-click="showDatabase(database)" {{database.name}}
+                    td style="text-align:right;"
+                      a ng-click="deleteDatabase(database.name)"
+                        i.foundicon-remove
 
-        .row
-          .large-12.columns
-            form
-              fieldset
-                legend Create a New Database User
-                .row
-                  .large-3.columns
-                    input type="text" placeholder="Username" ng-model="newDbUser.username"
-                  .large-3.columns
-                    input type="password" placeholder="Password" ng-model="newDbUser.password"
-                  .large-6.columns
-                    button.tiny.button ng-click="createDatabaseUser()" Create
-
-      section ng-show="selectedPane == 'databases' && selectedDatabase == null && isClusterAdmin"
-        .row
-          .large-12.columns
-            h2 Databases
-            table.twelve.columns
-              thead
-                tr
-                  td Name
-                  td
-              tr ng-repeat="database in databases | orderBy:'name'"
-                td
-                  a href="#" ng-click="showDatabase(database)" {{database.name}}
-                td style="text-align:right;"
-                  a ng-click="deleteDatabase(database.name)"
-                    i.foundicon-remove
-
-        .row
-          .large-12.columns
-            form
-              fieldset
-                legend Create a Database
-                .row
-                  .large-3.columns
-                    input type="text" placeholder="name" ng-model="newDatabaseName"
-                  .large-9.columns
-                    button.tiny.button ng-click="createDatabase()" Create
+            .row
+              .large-12.columns
+                form
+                  fieldset
+                    legend Create a Database
+                    .row
+                      .large-3.columns
+                        input type="text" placeholder="name" ng-model="newDatabaseName"
+                      .large-9.columns
+                        button.tiny.button ng-click="createDatabase()" Create
 
       section ng-show="selectedPane == 'admins' && isClusterAdmin"
         .row
