@@ -53,6 +53,12 @@
                     td Query
                     td
 
+        div ng-show="selectedSubPane == 'settings'"
+          .row
+            .large-12.columns
+              h3 Settings &amp; Properties
+              h5
+                ' {{databaseUsers.length}} users
 
         div ng-show="selectedSubPane == 'users'"
           section ng-show="selectedDatabase != null && selectedDatabaseUser != null && isClusterAdmin"

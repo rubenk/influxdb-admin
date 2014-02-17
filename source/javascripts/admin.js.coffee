@@ -210,6 +210,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $scope.selectedSubPane = "continuousQueries"
     $scope.getDbContinuousQueries()
 
+  $scope.showDbSettings = () ->
+    $scope.selectedDatabaseUser = null
+    $scope.selectedSubPane = "settings"
+    $scope.getDatabaseUsers()
+
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name
     $scope.getDatabaseUser()
