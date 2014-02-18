@@ -244,6 +244,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $scope.selectedSubPane = "settings"
     $scope.getDatabaseUsers()
 
+  $scope.showClusterAdmins = () ->
+    $scope.selectedPane = "admins"
+    $scope.selectedClusterAdmin = null
+
+  $scope.showClusterAdmin = (clusterAdmin) ->
+    $scope.selectedClusterAdmin = clusterAdmin.username
+
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name
     $scope.getDatabaseUser()

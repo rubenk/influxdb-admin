@@ -30,7 +30,7 @@ html
               li ng-class="" ng-show="isClusterAdmin"
                 a ng-click="showDatabases()" Databases
               li ng-class="" ng-show="isClusterAdmin"
-                a ng-click="selectedPane = 'admins'" Cluster Admins
+                a ng-click="showClusterAdmins()" Cluster Admins
               li.has-dropdown ng-class="{active: selectedPane == 'data'}"
 
                 a href="#" ng-hide="isClusterAdmin" Interfaces
