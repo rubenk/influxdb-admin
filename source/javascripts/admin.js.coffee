@@ -80,14 +80,14 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       password: $scope.password
 
     $q.when(window.influxdb.authenticateClusterAdmin()).then (response) ->
-      $scope.getInterfaces()
       $scope.authenticated = true
       $scope.isClusterAdmin = true
       $scope.isDatabaseAdmin = false
-      $scope.getDatabases()
-      $scope.getClusterAdmins()
       $scope.selectedPane = "databases"
       $scope.storeAuthenticatedCredentials()
+      $scope.getInterfaces()
+      $scope.getDatabases()
+      $scope.getClusterAdmins()
 
       $location.search({})
     , (response) ->
@@ -102,16 +102,20 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       database: $scope.database
 
     $q.when(window.influxdb.authenticateDatabaseUser($scope.database)).then (response) ->
-      $scope.getInterfaces()
       $scope.authenticated = true
       $scope.isDatabaseAdmin = true
       $scope.isClusterAdmin = false
-      $scope.selectedPane = "data"
-      $scope.setCurrentInterface("default")
+      $scope.selectedPane = "databases"
+      $scope.selectedSubPane = "users"
+      $scope.selectedDatabase = $scope.database
+      # $scope.setCurrentInterface("default")
       $location.search({})
       $scope.storeAuthenticatedCredentials()
+      $scope.getInterfaces()
+      $scope.getDatabaseUsers()
+
     , (response) ->
-      $scope.alertFailure("Couldn't authenticate database user: #{response.responseText}")
+      $scope.authenticateAsClusterAdmin()
 
   $scope.storeAuthenticatedCredentials = () ->
     $cookieStore.put("username", $scope.username)
@@ -129,11 +133,14 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       $scope.admins = response
 
   $scope.deleteClusterAdmin = (name) ->
-    $q.when(window.influxdb.deleteClusterAdmin(name)).then (response) ->
-      $scope.alertSuccess("Successfully deleted cluster admin: #{name}")
-      $scope.getClusterAdmins()
-    , (response) ->
-      $scope.alertFailure("Failed to deleted cluster admin: #{response.responseText}")
+    if $scope.username == name
+      $scope.alertFailure("You can't delete the cluster admin you're currently logged in as.")
+    else
+      $q.when(window.influxdb.deleteClusterAdmin(name)).then (response) ->
+        $scope.alertSuccess("Successfully deleted cluster admin: #{name}")
+        $scope.getClusterAdmins()
+      , (response) ->
+        $scope.alertFailure("Failed to deleted cluster admin: #{response.responseText}")
 
   $scope.createClusterAdmin = () ->
     $q.when(window.influxdb.createClusterAdmin($scope.newAdminUsername, $scope.newAdminPassword)).then (response) ->
@@ -200,6 +207,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.getDbContinuousQueries = () ->
     $q.when(window.influxdb.getContinuousQueries($scope.selectedDatabase)).then (response) ->
       $scope.continuousQueries = response.values
+
+  $scope.showSelectedDatabase = () ->
+    $scope.selectedPane = 'databases'
+    $scope.selectedSubPane = 'users'
+    $scope.selectedDatabaseUser = null
+    $scope.getDatabaseUsers()
 
   $scope.showDatabases = () ->
     $scope.selectedPane = 'databases'
