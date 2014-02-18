@@ -95,7 +95,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
 
       $location.search({})
     , (response) ->
-      $scope.alertFailure("Couldn't authenticate cluster admin: #{response.responseText}")
+      $scope.alertFailure("Couldn't authenticate user: #{response.responseText}")
 
   $scope.authenticateAsDatabaseAdmin = () ->
     window.influxdb = new InfluxDB
