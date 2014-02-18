@@ -84,10 +84,14 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       $scope.isClusterAdmin = true
       $scope.isDatabaseAdmin = false
       $scope.selectedPane = "databases"
+      $scope.selectedSubPane = "users"
       $scope.storeAuthenticatedCredentials()
       $scope.getInterfaces()
       $scope.getDatabases()
       $scope.getClusterAdmins()
+      if $scope.database
+        $scope.selectedDatabase = $scope.database
+        $scope.getDatabaseUsers()
 
       $location.search({})
     , (response) ->

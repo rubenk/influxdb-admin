@@ -25,7 +25,8 @@ html
           section.top-bar-section
             ul.left ng-show="authenticated"
               li ng-class="" ng-show="!isClusterAdmin"
-                a ng-click="showSelectedDatabase()" Current Database
+                a ng-click="showSelectedDatabase()"
+                  ' {{selectedDatabase}}
               li ng-class="" ng-show="isClusterAdmin"
                 a ng-click="showDatabases()" Databases
               li ng-class="" ng-show="isClusterAdmin"
