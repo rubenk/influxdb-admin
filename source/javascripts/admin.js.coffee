@@ -254,8 +254,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     else if $scope.dbUserPassword == null or $scope.dbUserPassword == ""
       $scope.alertFailure("Sorry, passwords cannot be blank.")
     else
-      $scope.dbUserPassword = null
-      $scope.dbUserPasswordConfirmation = null
+      data = {password: $scope.dbUserPassword}
+      $q.when(window.influxdb.updateDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser, data)).then (response) ->
+        $scope.alertSuccess("Successfully changed password for '#{$scope.selectedDatabaseUser}'")
+        $scope.dbUserPassword = null
+        $scope.dbUserPasswordConfirmation = null
+      , (response) ->
+        $scope.alertFailure("Failed to change password for user: #{response.responseText}")
 
   $scope.updateDatabaseUser = () ->
     data = {admin: $scope.databaseUser.isAdmin}
