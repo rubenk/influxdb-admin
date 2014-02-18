@@ -27,19 +27,23 @@ html
               li ng-class="" ng-show="!isClusterAdmin"
                 a ng-click="showSelectedDatabase()"
                   ' {{selectedDatabase}}
+
               li ng-class="" ng-show="isClusterAdmin"
                 a ng-click="showDatabases()" Databases
+
               li ng-class="" ng-show="isClusterAdmin"
                 a ng-click="showClusterAdmins()" Cluster Admins
-              li.has-dropdown ng-class="{active: selectedPane == 'data'}"
 
+              li.has-dropdown ng-class="{active: selectedPane == 'data'}"
                 a href="#" ng-hide="isClusterAdmin" Interfaces
                 ul.dropdown
                   li ng-repeat="i in interfaces"
                     a href="#" ng-click="setCurrentInterface(i)" {{humanize(i)}}
+
             ul.right ng-show="authenticated"
               li.has-form
                 a.button ng-click="authenticated=false" Disconnect
+
             ul.right.status ng-show="authenticated"
               li
                 i.fa.fa-user
