@@ -256,6 +256,19 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $scope.selectedPane = "admins"
     $scope.selectedClusterAdmin = null
 
+  $scope.showClusterConfiguration = () ->
+    $scope.selectedPane = "cluster"
+    $scope.getClusterServers()
+    $scope.getClusterShards()
+
+  $scope.getClusterServers = () ->
+    $q.when(window.influxdb.getClusterServers()).then (response) ->
+      $scope.clusterServers = response
+
+  $scope.getClusterShards = () ->
+    $q.when(window.influxdb.getClusterShards()).then (response) ->
+      $scope.clusterShards = response
+
   $scope.showClusterAdmin = (clusterAdmin) ->
     $scope.selectedClusterAdmin = clusterAdmin.username
 

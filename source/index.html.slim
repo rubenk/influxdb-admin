@@ -25,6 +25,62 @@
             .large-8.columns
 
     div ng-show="authenticated"
+      div ng-show="selectedPane == 'cluster'"
+        .row
+          .large-12.columns
+            h2 Servers
+            table.twelve.columns
+              thead
+                tr
+                  td Id
+                  td Connection String
+              tr ng-repeat="clusterServer in clusterServers"
+                td
+                  ' {{clusterServer.id}}
+                td
+                  ' {{clusterServer.protobufConnectString}}
+
+        hr
+        .row
+          .large-12.columns
+            h2 Shards
+            h3 Short Term
+            table.twelve.columns
+              thead
+                tr
+                  td Id
+                  td Start Time
+                  td End Time
+                  td Servers
+              tr ng-repeat="clusterShard in clusterShards.shortTerm"
+                td
+                  ' {{clusterShard.id}}
+                td
+                  ' {{clusterShard.startTime}}
+                td
+                  ' {{clusterShard.endTime}}
+                td
+                  ' {{clusterShard.serverIds}}
+
+
+            h3 Long Term
+            table.twelve.columns
+              thead
+                tr
+                  td Id
+                  td Start Time
+                  td End Time
+                  td Servers
+              tr ng-repeat="clusterShard in clusterShards.longTerm"
+                td
+                  ' {{clusterShard.id}}
+                td
+                  ' {{clusterShard.startTime}}
+                td
+                  ' {{clusterShard.endTime}}
+                td
+                  ' {{clusterShard.serverIds}}
+
       div ng-show="selectedPane == 'databases'"
         section ng-show="selectedDatabase == null && isClusterAdmin"
           .row

@@ -34,6 +34,9 @@ html
               li ng-class="" ng-show="isClusterAdmin"
                 a ng-click="showClusterAdmins()" Cluster Admins
 
+              li ng-class="" ng-show="isClusterAdmin"
+                a ng-click="showClusterConfiguration()" Cluster
+
               li.has-dropdown ng-class="{active: selectedPane == 'data'}"
                 a href="#" ng-hide="isClusterAdmin" Interfaces
                 ul.dropdown
