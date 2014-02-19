@@ -208,10 +208,6 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $q.when(window.influxdb.getDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser)).then (response) ->
       $scope.databaseUser = response
 
-  $scope.getDbContinuousQueries = () ->
-    $q.when(window.influxdb.getContinuousQueries($scope.selectedDatabase)).then (response) ->
-      $scope.continuousQueries = response.values
-
   $scope.showSelectedDatabase = () ->
     $scope.selectedPane = 'databases'
     $scope.selectedSubPane = 'users'
@@ -234,15 +230,27 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $scope.selectedSubPane = "users"
     $scope.getDatabaseUsers()
 
-  $scope.showDbContinuousQueries = () ->
+  $scope.getContinuousQueries = () ->
+    $q.when(window.influxdb.getContinuousQueries($scope.selectedDatabase)).then (response) ->
+      $scope.continuousQueries = response
+
+  $scope.showContinuousQueries = () ->
     $scope.selectedDatabaseUser = null
     $scope.selectedSubPane = "continuousQueries"
-    $scope.getDbContinuousQueries()
+    $scope.getContinuousQueries()
+
+  $scope.deleteContinuousQuery = (continuousQuery) ->
+    $q.when(window.influxdb.deleteContinuousQuery($scope.selectedDatabase, continuousQuery.id)).then (response) ->
+      $scope.alertSuccess("Successfully deleted conitinuous query: '#{continuousQuery.id}'")
+      $scope.getContinuousQueries()
+    , (response) ->
+      $scope.alertFailure("Failed to delete continuous query: #{response.responseText}")
 
   $scope.showDbSettings = () ->
     $scope.selectedDatabaseUser = null
     $scope.selectedSubPane = "settings"
     $scope.getDatabaseUsers()
+    $scope.getContinuousQueries()
 
   $scope.showClusterAdmins = () ->
     $scope.selectedPane = "admins"

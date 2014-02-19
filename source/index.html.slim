@@ -61,7 +61,7 @@
                   a.button.secondary.tiny ng-click="showDatabaseUsers()" ng-class="{active: selectedSubPane == 'users'}" title="Users"
                     i.fa.fa-users
                 li
-                  a.button.secondary.tiny ng-click="showDbContinuousQueries()" title="Continuous Queries" ng-class="{active: selectedSubPane == 'continuousQueries'}"
+                  a.button.secondary.tiny ng-click="showContinuousQueries()" title="Continuous Queries" ng-class="{active: selectedSubPane == 'continuousQueries'}"
                     i.fa.fa-refresh
                 li
                   a.button.secondary.tiny ng-click="showDbSettings()" ng-class="{active: selectedSubPane == 'settings'}" title="Settings"
@@ -74,18 +74,33 @@
           .row
             .large-12.columns
               h3 Continuous Queries
-              table.twelve.columns
+              table.twelve.columns ng-show="continuousQueries"
                 thead
                   tr
+                    td Id
                     td Query
                     td
+                tr ng-repeat="continuousQuery in continuousQueries"
+                  td
+                    ' {{continuousQuery.id}}
+                  td
+                    ' {{continuousQuery.query}}
+                  td style="text-align:right;"
+                    a ng-click="deleteContinuousQuery(continuousQuery)" ng-confirm-click="Are you sure you want to delete this continuous query?"
+                      i.fa.fa-times
+
+              .panel ng-hide="continuousQueries"
+                h5 No continuous queries defined!
 
         div ng-show="selectedSubPane == 'settings'"
           .row
             .large-12.columns
               h3 Settings &amp; Properties
-              h5
-                ' {{databaseUsers.length}} users
+              .panel
+                h5
+                  ' {{databaseUsers.length}} users
+                h5
+                  ' {{continuousQueries.length}} continuous queries
               hr
               a.button.alert ng-click="deleteDatabase(selectedDatabase)" ng-confirm-click="Are you sure you want to delete this database?" Delete Database
 
