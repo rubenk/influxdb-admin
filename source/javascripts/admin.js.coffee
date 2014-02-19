@@ -269,6 +269,13 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $q.when(window.influxdb.getClusterShards()).then (response) ->
       $scope.clusterShards = response
 
+  $scope.deleteClusterShard = (clusterShard) ->
+    $q.when(window.influxdb.deleteClusterShard(clusterShard.id, clusterShard.serverIds)).then (response) ->
+      $scope.alertSuccess("Successfully deleted shard: '#{clusterShard.id}'")
+      $scope.getClusterShards()
+    , (response) ->
+      $scope.alertFailure("Failed to delete shard: #{response.responseText}")
+
   $scope.showClusterAdmin = (clusterAdmin) ->
     $scope.selectedClusterAdmin = clusterAdmin.username
 

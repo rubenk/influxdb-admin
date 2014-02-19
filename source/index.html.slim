@@ -52,15 +52,20 @@
                   td Start Time
                   td End Time
                   td Servers
+                  td
+
               tr ng-repeat="clusterShard in clusterShards.shortTerm"
                 td
                   ' {{clusterShard.id}}
                 td
-                  ' {{clusterShard.startTime}}
+                  ' {{clusterShard.startTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                 td
-                  ' {{clusterShard.endTime}}
+                  ' {{clusterShard.endTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                 td
                   ' {{clusterShard.serverIds}}
+                td style="text-align:right;"
+                  a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
+                    i.fa.fa-times
 
 
             h3 Long Term
@@ -71,15 +76,20 @@
                   td Start Time
                   td End Time
                   td Servers
+                  td
+
               tr ng-repeat="clusterShard in clusterShards.longTerm"
                 td
                   ' {{clusterShard.id}}
                 td
-                  ' {{clusterShard.startTime}}
+                  ' {{clusterShard.startTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                 td
-                  ' {{clusterShard.endTime}}
+                  ' {{clusterShard.endTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                 td
                   ' {{clusterShard.serverIds}}
+                td style="text-align:right;"
+                  a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
+                    i.fa.fa-times
 
       div ng-show="selectedPane == 'databases'"
         section ng-show="selectedDatabase == null && isClusterAdmin"
