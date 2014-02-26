@@ -45,7 +45,7 @@
           .large-12.columns
             h2 Shards
             h3 Short Term
-            table.twelve.columns
+            table.twelve.columns ng-show="clusterShards.shortTerm"
               thead
                 tr
                   td Id
@@ -67,9 +67,11 @@
                   a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
                     i.fa.fa-times
 
+            .panel ng-hide="clusterShards.shortTerm"
+              h5 No Short Term Shards Currently Exist
 
             h3 Long Term
-            table.twelve.columns
+            table.twelve.columns ng-show="clusterShards.longTerm"
               thead
                 tr
                   td Id
@@ -90,6 +92,9 @@
                 td style="text-align:right;"
                   a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
                     i.fa.fa-times
+
+            .panel ng-hide="clusterShards.longTerm"
+              h5 No Long Term Shards Currently Exist
 
       div ng-show="selectedPane == 'databases'"
         section ng-show="selectedDatabase == null && isClusterAdmin"
