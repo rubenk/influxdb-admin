@@ -66,6 +66,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $("iframe").prop("src", "/interfaces/#{i}")
     $scope.selectedPane = "data"
 
+  $scope.showDefaultInterface = (databaseName) ->
+    window.influxdb.database = databaseName
+    $("iframe").prop("src", "/interfaces/default")
+    $scope.selectedPane = "data"
+
   $scope.authenticateUser = () ->
     if $scope.database
       $scope.authenticateAsDatabaseAdmin()
