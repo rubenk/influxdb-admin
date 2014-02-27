@@ -232,7 +232,10 @@
                         input type="text" placeholder="Username" ng-model="newDbUser.username"
                       .large-3.columns
                         input type="password" placeholder="Password" ng-model="newDbUser.password"
-                      .large-6.columns
+                      .large-3.columns style="padding-top:10px;"
+                        input type="checkbox" ng-model="newDbUser.isAdmin"
+                          label Admin?
+                      .large-3.columns
                         button.tiny.button ng-click="createDatabaseUser()" Create
 
       section ng-show="selectedPane == 'admins' && isClusterAdmin"

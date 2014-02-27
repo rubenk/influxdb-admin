@@ -166,6 +166,8 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.createDatabaseUser = () ->
     $q.when(window.influxdb.createUser($scope.selectedDatabase, $scope.newDbUser.username, $scope.newDbUser.password)).then (response) ->
       $scope.alertSuccess("Successfully created user: #{$scope.newDbUser.username}")
+      data = {admin: $scope.newDbUser.isAdmin}
+      window.influxdb.updateDatabaseUser($scope.selectedDatabase, $scope.newDbUser.username, data)
       $scope.newDbUser = {}
       $scope.getDatabaseUsers()
     , (response) ->
