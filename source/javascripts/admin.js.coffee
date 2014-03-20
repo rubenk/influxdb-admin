@@ -11,6 +11,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.database = $location.search()["database"] || $cookieStore.get("database")
   $scope.username = $location.search()["username"] || $cookieStore.get("username")
   $scope.password = $location.search()["password"] || $cookieStore.get("password")
+  $scope.ssl = $cookieStore.get("ssl") || false
   $scope.authenticated = false
   $scope.isClusterAdmin = false
   $scope.databases = []
@@ -83,6 +84,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       port: $scope.port
       username: $scope.username
       password: $scope.password
+      ssl: $scope.ssl
 
     $q.when(window.influxdb.authenticateClusterAdmin()).then (response) ->
       $scope.authenticated = true
@@ -109,6 +111,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       username: $scope.username
       password: $scope.password
       database: $scope.database
+      ssl: $scope.ssl
 
     $q.when(window.influxdb.authenticateDatabaseUser($scope.database)).then (response) ->
       $scope.authenticated = true
@@ -132,6 +135,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $cookieStore.put("database", $scope.database)
     $cookieStore.put("host", $scope.host)
     $cookieStore.put("port", $scope.port)
+    $cookieStore.put("ssl", $scope.ssl)
 
   $scope.getDatabases = () ->
     $q.when(window.influxdb.getDatabases()).then (response) ->

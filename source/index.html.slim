@@ -22,7 +22,10 @@
               input type="text" placeholder="hostname" ng-model="host"
             .large-1.columns
               input type="text" placeholder="port" ng-model="port"
-            .large-8.columns
+            .large-2.columns style="padding-top: 10px;"
+              input type="checkbox" ng-model="ssl"
+              label SSL
+            .large-6.columns
 
     div ng-show="authenticated"
       div ng-show="selectedPane == 'cluster'"
