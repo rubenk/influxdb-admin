@@ -203,7 +203,7 @@
                       .large-3.columns
                         input type="password" placeholder="Password Confirmation" ng-model="dbUserPasswordConfirmation"
                       .large-6.columns
-                        button.tiny.button ng-click="changeDbUserPassword()" Create
+                        button.tiny.button ng-click="changeDbUserPassword()" Change Password
 
           section ng-show="selectedDatabase != null && selectedDatabaseUser == null"
             .row
@@ -287,7 +287,7 @@
                     .large-3.columns
                       input type="password" placeholder="Password Confirmation" ng-model="clusterAdminPasswordConfirmation"
                     .large-6.columns
-                      button.tiny.button ng-click="changeClusterAdminPassword()" Create
+                      button.tiny.button ng-click="changeClusterAdminPassword()" Change Password
 
 
 section ng-show="selectedPane == 'data' && authenticated"

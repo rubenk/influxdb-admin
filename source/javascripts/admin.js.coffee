@@ -304,6 +304,20 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       , (response) ->
         $scope.alertFailure("Failed to change password for user: #{response.responseText}")
 
+  $scope.changeClusterAdminPassword = () ->
+    if $scope.clusterAdminPassword != $scope.clusterAdminPasswordConfirmation
+      $scope.alertFailure("Sorry, the passwords don't match.")
+    else if $scope.clusterAdminPassword == null or $scope.clusterAdminPassword == ""
+      $scope.alertFailure("Sorry, passwords cannot be blank.")
+    else
+      data = {password: $scope.clusterAdminPassword}
+      $q.when(window.influxdb.updateClusterAdmin($scope.selectedClusterAdmin, data)).then (response) ->
+        $scope.alertSuccess("Successfully changed password for '#{$scope.selectedClusterAdmin}'")
+        $scope.clusterAdminPassword = null
+        $scope.clusterAdminPasswordConfirmation = null
+      , (response) ->
+        $scope.alertFailure("Failed to change password for cluster admin: #{response.responseText}")
+
   $scope.updateDatabaseUser = () ->
     data = {admin: $scope.databaseUser.isAdmin}
     $q.when(window.influxdb.updateDatabaseUser($scope.selectedDatabase, $scope.selectedDatabaseUser, data)).then (response) ->
