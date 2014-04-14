@@ -6,8 +6,8 @@ adminApp.config ["$locationProvider", ($locationProvider) ->
 ]
 
 adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStore", ($scope, $location, $q, $cookieStore) ->
-  $scope.host = $location.search()["host"] || $location.host()
-  $scope.port = $location.search()["port"] || if $scope.host == "sandbox.influxdb.org" then 9061 else 8086
+  $scope.host = $location.search()["host"] || $cookieStore.get("host") || $location.host()
+  $scope.port = $location.search()["port"] || $cookieStore.get("port")
   $scope.database = $location.search()["database"] || $cookieStore.get("database")
   $scope.username = $location.search()["username"] || $cookieStore.get("username")
   $scope.password = $location.search()["password"] || $cookieStore.get("password")
@@ -80,7 +80,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
 
   $scope.authenticateAsClusterAdmin = () ->
     window.influxdb = new InfluxDB
-      host: $scope.host
+      hosts: [$scope.host]
       port: $scope.port
       username: $scope.username
       password: $scope.password
