@@ -94,8 +94,8 @@ adminApp.directive "lineChart", [() ->
     scope.render = (data, seriesName) ->
       return if (!data)
 
-      margin = {top: 0, right: 0, bottom: 30, left: 50}
-      width = 1086 - margin.left - margin.right
+      margin = {top: 10, right: 0, bottom: 30, left: 50}
+      width = 970 - margin.left - margin.right
       height = 200 - margin.top - margin.bottom
 
       x = d3.time.scale().range([0, width])
