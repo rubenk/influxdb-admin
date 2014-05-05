@@ -101,7 +101,7 @@ adminApp.directive "lineChart", [() ->
       x = d3.time.scale().range([0, width])
       y = d3.scale.linear().range([height, 0])
       xAxis = d3.svg.axis().scale(x).orient("bottom")
-      yAxis = d3.svg.axis().scale(y).orient("left").ticks(5)
+      yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickFormat(d3.format("1.2s"))
       line = d3.svg.line().x((d) -> x(d.time)).y((d) -> y(d.value))
 
       svg = d3.select(element[0]).append("svg")
