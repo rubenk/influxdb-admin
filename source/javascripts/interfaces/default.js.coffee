@@ -65,8 +65,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", ($scope, $lo
 
   $scope.filteredColumns = (datum) ->
     columns = []
-    datum.points[0].forEach (value, n) ->
-      columns.push datum.columns[n] unless (typeof value == "string" || value instanceof String)
+    if datnum.points.length > 0
+      datnum.points[0].forEach (value, n) ->
+        columns.push datum.columns[n] unless (typeof value == "string" || value instanceof String)
+    else
+      columns = datum.columns
     columns.filter (d) -> d != "time" && d != "sequence_number"
 
   $scope.columnPoints = (datum, column) ->
