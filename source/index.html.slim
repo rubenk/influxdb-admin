@@ -255,9 +255,9 @@
                     td
                 tr ng-repeat="admin in admins"
                   td
-                    a href="#" ng-click="showClusterAdmin(admin)" {{admin.username}}
+                    a href="#" ng-click="showClusterAdmin(admin)" {{admin.name}}
                   td style="text-align:right;"
-                    a ng-click="deleteClusterAdmin(admin.username)" ng-confirm-click="Are you sure you want to delete this cluster admin?"
+                    a ng-click="deleteClusterAdmin(admin.name)" ng-confirm-click="Are you sure you want to delete this cluster admin?"
                       i.fa.fa-times
 
           .row

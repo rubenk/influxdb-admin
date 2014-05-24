@@ -288,7 +288,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       $scope.alertFailure("Failed to delete shard: #{response.responseText}")
 
   $scope.showClusterAdmin = (clusterAdmin) ->
-    $scope.selectedClusterAdmin = clusterAdmin.username
+    $scope.selectedClusterAdmin = clusterAdmin.name
 
   $scope.showDatabaseUser = (databaseUser) ->
     $scope.selectedDatabaseUser = databaseUser.name
