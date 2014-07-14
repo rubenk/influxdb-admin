@@ -271,6 +271,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     $scope.selectedPane = "cluster"
     $scope.getClusterServers()
     $scope.getClusterShards()
+    $scope.getClusterShardSpaces()
 
   $scope.getClusterServers = () ->
     $q.when(window.influxdb.getClusterServers()).then (response) ->
@@ -279,6 +280,10 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.getClusterShards = () ->
     $q.when(window.influxdb.getClusterShards()).then (response) ->
       $scope.clusterShards = response
+
+  $scope.getClusterShardSpaces = () ->
+    $q.when(window.influxdb.getClusterShardSpaces()).then (response) ->
+      $scope.clusterShardSpaces = response
 
   $scope.deleteClusterShard = (clusterShard) ->
     $q.when(window.influxdb.deleteClusterShard(clusterShard.id, clusterShard.serverIds)).then (response) ->

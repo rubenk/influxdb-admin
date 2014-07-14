@@ -47,19 +47,24 @@
         .row
           .large-12.columns
             h2 Shards
-            h3 Short Term
-            table.twelve.columns ng-show="clusterShards.shortTerm"
+            table.twelve.columns ng-show="clusterShards"
               thead
                 tr
                   td Id
+                  td Database
+                  td Space
                   td Start Time
                   td End Time
                   td Servers
                   td
 
-              tr ng-repeat="clusterShard in clusterShards.shortTerm"
+              tr ng-repeat="clusterShard in clusterShards"
                 td
                   ' {{clusterShard.id}}
+                td
+                  ' {{clusterShard.database}}
+                td
+                  ' {{clusterShard.spaceName}}
                 td
                   ' {{clusterShard.startTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
                 td
@@ -70,34 +75,36 @@
                   a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
                     i.fa.fa-times
 
-            .panel ng-hide="clusterShards.shortTerm"
-              h5 No Short Term Shards Currently Exist
 
-            h3 Long Term
-            table.twelve.columns ng-show="clusterShards.longTerm"
+            h2 Shard Spaces
+            table.twelve.columns ng-show="clusterShardSpaces"
               thead
                 tr
-                  td Id
-                  td Start Time
-                  td End Time
-                  td Servers
-                  td
+                  td Database
+                  td Name
+                  td Series to match
+                  td Retention Policy
+                  td Shard Duration
+                  td RF
+                  td Split
 
-              tr ng-repeat="clusterShard in clusterShards.longTerm"
+              tr ng-repeat="space in clusterShardSpaces"
                 td
-                  ' {{clusterShard.id}}
+                  ' {{space.Database}}
                 td
-                  ' {{clusterShard.startTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                  ' {{space.Name}}
                 td
-                  ' {{clusterShard.endTime*1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+                  ' {{space.Regex}}
                 td
-                  ' {{clusterShard.serverIds}}
-                td style="text-align:right;"
-                  a ng-click="deleteClusterShard(clusterShard)" ng-confirm-click="Are you sure you want to delete this shard?"
-                    i.fa.fa-times
-
-            .panel ng-hide="clusterShards.longTerm"
-              h5 No Long Term Shards Currently Exist
+                  ' {{space.RetentionPolicy}}
+                td
+                  ' {{space.ShardDuration}}
+                td
+                  ' {{space.ReplicationFactor}}
+                td
+                  ' {{space.Split}}
+            .panel ng-hide="clusterShardSpaces"
+              h5 No Shard Spaces Currently Exist
 
       div ng-show="selectedPane == 'databases'"
         section ng-show="selectedDatabase == null && isClusterAdmin"
