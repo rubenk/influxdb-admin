@@ -90,19 +90,19 @@
 
               tr ng-repeat="space in clusterShardSpaces"
                 td
-                  ' {{space.Database}}
+                  ' {{space.database}}
                 td
-                  ' {{space.Name}}
+                  ' {{space.name}}
                 td
-                  ' {{space.Regex}}
+                  ' {{space.regex}}
                 td
-                  ' {{space.RetentionPolicy}}
+                  ' {{space.retentionPolicy}}
                 td
-                  ' {{space.ShardDuration}}
+                  ' {{space.shardDuration}}
                 td
-                  ' {{space.ReplicationFactor}}
+                  ' {{space.replicationFactor}}
                 td
-                  ' {{space.Split}}
+                  ' {{space.split}}
             .panel ng-hide="clusterShardSpaces"
               h5 No Shard Spaces Currently Exist
 
