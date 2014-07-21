@@ -9,9 +9,9 @@ html
     title InfluxDB Administration
 
     = stylesheet_link_tag "all"
-    = stylesheet_link_tag "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"
     = javascript_include_tag "all"
-    = javascript_include_tag "http://get.influxdb.org/influxdb-0.0.14.js"
+
+    = javascript_include_tag "/javascripts/vendor/influxdb-0.1.4.min.js"
 
   body class="#{page_classes}" ng-app="adminApp" ng-controller="AdminIndexCtrl"
     section.nav

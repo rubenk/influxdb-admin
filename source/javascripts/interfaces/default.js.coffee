@@ -1,6 +1,7 @@
 #= require vendor/jquery-2.0.3
 #= require vendor/angular
 #= require vendor/jquery.magnific-popup.min
+#= require vendor/d3-3.4.11.min
 #= require_self
 
 
