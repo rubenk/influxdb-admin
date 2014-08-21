@@ -32,6 +32,12 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.databaseUser = null
   $scope.successMessage = ""
   $scope.failureMessage = ""
+  $scope.shardSpaces = []
+  $scope.shardSpaceDurations = ["15m", "30m", "1h", "4h", "12h", "1d", "7d", "30d", "180d"]
+  $scope.shardSpaceRetentionPolicies = ["1h", "4h", "12h", "1d", "7d", "30d", "60d", "90d", "180d", "365d", "730d", "inf"]
+  $scope.shardSpaceReplicationFactors = [1, 3, 4, 5, 6]
+  $scope.shardSpaceSplits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 
   $scope.newAdminUsername = null
   $scope.newAdminPassword = null
@@ -164,8 +170,19 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
     , (response) ->
       $scope.alertFailure("Failed to create user: #{response.responseText}")
 
+  $scope.addShardSpace = () ->
+    $scope.shardSpaces.push
+      name: "default"
+      regEx: "/.*/"
+      retentionPolicy: "inf"
+      duration: "7d"
+      replicationFactor: 1
+      split: 1
+
   $scope.createDatabase = () ->
-    $q.when(window.influxdb.createDatabase($scope.newDatabaseName)).then (response) ->
+    data = {spaces: $scope.shardSpaces}
+
+    $q.when(window.influxdb.createDatabaseConfig($scope.newDatabaseName, data)).then (response) ->
       $scope.alertSuccess("Successfully created database: #{$scope.newDatabaseName}")
       $scope.newDatabaseName = null
       $scope.getDatabases()

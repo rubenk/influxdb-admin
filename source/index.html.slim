@@ -133,9 +133,28 @@
                   legend Create a Database
                   .row
                     .large-3.columns
-                      input type="text" placeholder="name" ng-model="newDatabaseName"
+                      input type="text" placeholder="Database Name" ng-model="newDatabaseName"
                     .large-9.columns
                       button.tiny.button ng-click="createDatabase()" Create
+                  .row ng-repeat="shardSpace in shardSpaces"
+                    .large-3.columns
+                      input type="text" placeholder="Space Name" ng-model="shardSpace.name"
+                    .large-1.columns
+                      select ng-model="shardSpace.retentionPolicy" ng-options="duration for duration in shardSpaceRetentionPolicies"
+                    .large-1.columns
+                      select ng-model="shardSpace.duration" ng-options="duration for duration in shardSpaceDurations"
+                    .large-2.columns
+                      input type="text" placeholder="RegEx" ng-model="shardSpace.regEx"
+                    .large-1.columns
+                      select ng-model="shardSpace.replicationFactor" ng-options="factor for factor in shardSpaceReplicationFactors"
+                    .large-1.columns
+                      select ng-model="shardSpace.split" ng-options="split for split in shardSpaceSplits"
+                    .large-3.columns
+                      button.tiny.button.danger ng-click="shardSpaces.splice($index,1)" Remove
+                  .row
+                    .large-12.columns
+                      button.tiny.button ng-click="addShardSpace()" Add Shard Space
+
 
         section#database-header ng-show="selectedDatabase != null"
           .row
