@@ -146,6 +146,9 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.getDatabases = () ->
     $q.when(window.influxdb.getDatabases()).then (response) ->
       $scope.databases = response
+      $scope.shardSpaces = []
+      $scope.addShardSpace()
+
 
   $scope.getClusterAdmins = () ->
     $q.when(window.influxdb.getClusterAdmins()).then (response) ->
@@ -178,6 +181,11 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       duration: "7d"
       replicationFactor: 1
       split: 1
+
+  $scope.removeShardSpace = (index) ->
+    $scope.shardSpaces.splice(index,1)
+    if $scope.shardSpaces.length == 0
+      $scope.addShardSpace()
 
   $scope.createDatabase = () ->
     data = {spaces: $scope.shardSpaces}
