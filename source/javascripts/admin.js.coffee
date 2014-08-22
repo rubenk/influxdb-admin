@@ -178,7 +178,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
       name: "default"
       regEx: "/.*/"
       retentionPolicy: "inf"
-      duration: "7d"
+      shardDuration: "7d"
       replicationFactor: 1
       split: 1
 
