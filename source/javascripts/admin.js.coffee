@@ -35,7 +35,7 @@ adminApp.controller "AdminIndexCtrl", ["$scope", "$location", "$q", "$cookieStor
   $scope.shardSpaces = []
   $scope.shardSpaceDurations = ["15m", "30m", "1h", "4h", "12h", "1d", "7d", "30d", "180d"]
   $scope.shardSpaceRetentionPolicies = ["1h", "4h", "12h", "1d", "7d", "30d", "60d", "90d", "180d", "365d", "730d", "inf"]
-  $scope.shardSpaceReplicationFactors = [1, 3, 4, 5, 6]
+  $scope.shardSpaceReplicationFactors = [1, 2, 3, 4, 5, 6]
   $scope.shardSpaceSplits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
